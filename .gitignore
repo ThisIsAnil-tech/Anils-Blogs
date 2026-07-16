@@ -13,3 +13,5 @@ aiml/.env
 aiml/.pytest_cache/
 aiml/.mypy_cache/
 aiml/.coverage
+aiml/logs/
+aiml/data/
