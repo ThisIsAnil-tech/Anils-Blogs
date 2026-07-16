@@ -1,13 +1,19 @@
 const express = require('express');
 const router = express.Router();
+
+// Import controllers
+const categoryController = require('../controllers/categoryController');
+
+// Destructure with fallbacks
 const {
-  getCategories,
-  getCategoryBySlug,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-  getCategoryBlogs
-} = require('../controllers/categoryController');
+  getCategories = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getCategoryBySlug = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  createCategory = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateCategory = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  deleteCategory = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getCategoryBlogs = (req, res) => res.status(501).json({ message: 'Not implemented' })
+} = categoryController;
+
 const {
   categoryValidation,
   idValidation,
@@ -17,7 +23,9 @@ const {
 const { generalLimiter } = require('../middleware/rateLimiter');
 const { protect, isAdmin } = require('../middleware/auth');
 
-// Public routes
+// ============================================
+// Public Routes
+// ============================================
 router.use(generalLimiter);
 
 // Get all categories
@@ -29,17 +37,11 @@ router.get('/:slug', slugValidation, getCategoryBySlug);
 // Get blogs in category
 router.get('/:slug/blogs', slugValidation, paginationValidation, getCategoryBlogs);
 
-// Admin routes
-router.use(protect);
-router.use(isAdmin);
-
-// Create category
-router.post('/', categoryValidation, createCategory);
-
-// Update category
-router.put('/:id', idValidation, categoryValidation, updateCategory);
-
-// Delete category
-router.delete('/:id', idValidation, deleteCategory);
+// ============================================
+// Admin Routes
+// ============================================
+router.post('/', protect, isAdmin, categoryValidation, createCategory);
+router.put('/:id', protect, isAdmin, idValidation, categoryValidation, updateCategory);
+router.delete('/:id', protect, isAdmin, idValidation, deleteCategory);
 
 module.exports = router;

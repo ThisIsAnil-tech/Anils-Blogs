@@ -1,23 +1,31 @@
 const express = require('express');
 const router = express.Router();
+
+// Import controllers
+const settingsController = require('../controllers/settingsController');
+
+// Destructure with fallbacks
 const {
-  getSettings,
-  updateSettings,
-  getSocialSettings,
-  updateSocialSettings,
-  getEmailSettings,
-  updateEmailSettings,
-  getSecuritySettings,
-  updateSecuritySettings,
-  getAnalyticsSettings,
-  updateAnalyticsSettings,
-  getBackupSettings,
-  updateBackupSettings
-} = require('../controllers/settingsController');
+  getSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getSocialSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateSocialSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getEmailSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateEmailSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getSecuritySettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateSecuritySettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getAnalyticsSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateAnalyticsSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  getBackupSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
+  updateBackupSettings = (req, res) => res.status(501).json({ message: 'Not implemented' })
+} = settingsController;
+
 const { protect, isAdmin } = require('../middleware/auth');
 const { generalLimiter } = require('../middleware/rateLimiter');
 
-// All settings routes are protected (Admin only)
+// ============================================
+// Admin Routes (All protected)
+// ============================================
 router.use(protect);
 router.use(isAdmin);
 router.use(generalLimiter);

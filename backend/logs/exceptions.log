@@ -714,3 +714,171 @@ Require stack:
     }
   ]
 }
+2026-07-17 00:56:53 [ERROR]: uncaughtException: Cannot find module 'cloudinary'
+Require stack:
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\config\cloudinary.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\mediaController.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\mediaRoutes.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\index.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\app.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\server.js
+Error: Cannot find module 'cloudinary'
+Require stack:
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\config\cloudinary.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\mediaController.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\mediaRoutes.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\index.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\app.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\server.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+    at require (node:internal/modules/helpers:147:16)
+    at Object.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\config\cloudinary.js:1:20)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+Error: Cannot find module 'cloudinary'
+Require stack:
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\config\cloudinary.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\mediaController.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\mediaRoutes.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\index.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\src\app.js
+- C:\GitHub\Working-GitHub\AnilBlogs\backend\server.js
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1383:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
+    at Function._load (node:internal/modules/cjs/loader:1192:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+    at require (node:internal/modules/helpers:147:16)
+    at Object.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\config\cloudinary.js:1:20)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+{
+  "error": {
+    "code": "MODULE_NOT_FOUND",
+    "requireStack": [
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\config\\cloudinary.js",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\controllers\\mediaController.js",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\routes\\mediaRoutes.js",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\routes\\index.js",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\app.js",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\server.js"
+    ]
+  },
+  "exception": true,
+  "date": "Fri Jul 17 2026 00:56:53 GMT+0530 (India Standard Time)",
+  "process": {
+    "pid": 6176,
+    "uid": null,
+    "gid": null,
+    "cwd": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend",
+    "execPath": "C:\\Program Files\\nodejs\\node.exe",
+    "version": "v22.20.0",
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\server.js"
+    ],
+    "memoryUsage": {
+      "rss": 99704832,
+      "heapTotal": 66437120,
+      "heapUsed": 40924144,
+      "external": 20662603,
+      "arrayBuffers": 18264996
+    }
+  },
+  "os": {
+    "loadavg": [
+      0,
+      0,
+      0
+    ],
+    "uptime": 5463.468
+  },
+  "trace": [
+    {
+      "column": 15,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Function._resolveFilename",
+      "line": 1383,
+      "method": "_resolveFilename",
+      "native": false
+    },
+    {
+      "column": 19,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "defaultResolveImpl",
+      "line": 1025,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 22,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "resolveForCJSWithHooks",
+      "line": 1030,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 37,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Function._load",
+      "line": 1192,
+      "method": "_load",
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "node:diagnostics_channel",
+      "function": "TracingChannel.traceSync",
+      "line": 322,
+      "method": "traceSync",
+      "native": false
+    },
+    {
+      "column": 24,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "wrapModuleLoad",
+      "line": 237,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 12,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module.require",
+      "line": 1463,
+      "method": "require",
+      "native": false
+    },
+    {
+      "column": 16,
+      "file": "node:internal/modules/helpers",
+      "function": "require",
+      "line": 147,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 20,
+      "file": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\config\\cloudinary.js",
+      "function": null,
+      "line": 1,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module._compile",
+      "line": 1706,
+      "method": "_compile",
+      "native": false
+    }
+  ]
+}

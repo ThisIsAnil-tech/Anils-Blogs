@@ -14,43 +14,35 @@ const searchBlogs = async (req, res, next) => {
 
     const { skip, limit: limitNum } = getPagination(page, limit);
 
-    // Build query
     const query = { status: 'published' };
 
-    // Search term
     if (q) {
       query.$or = [
         { title: { $regex: q, $options: 'i' } },
-        { excerpt: { $regex: q, $options: 'i' } },
-        { content: { $regex: q, $options: 'i' } }
+        { excerpt: { $regex: q, $options: 'i' } }
       ];
     }
 
-    // Category filter
     if (category) {
       const categoryDoc = await Category.findOne({ slug: category });
       if (categoryDoc) query.category = categoryDoc._id;
     }
 
-    // Tag filter
     if (tag) {
       const tagDoc = await Tag.findOne({ slug: tag });
       if (tagDoc) query.tags = tagDoc._id;
     }
 
-    // Date range
     if (dateFrom || dateTo) {
       query.publishDate = {};
       if (dateFrom) query.publishDate.$gte = new Date(dateFrom);
       if (dateTo) query.publishDate.$lte = new Date(dateTo);
     }
 
-    // Status (for admin search)
     if (status && req.user && req.user.role === 'admin') {
       query.status = status;
     }
 
-    // Sort
     let sortOption = { publishDate: -1 };
     switch (sort) {
       case 'relevance':
@@ -111,7 +103,6 @@ const searchSuggestions = async (req, res, next) => {
 
     const suggestions = [];
 
-    // Blog title suggestions
     if (type === 'all' || type === 'blogs') {
       const blogs = await Blog.find({
         status: 'published',
@@ -130,7 +121,6 @@ const searchSuggestions = async (req, res, next) => {
       });
     }
 
-    // Category suggestions
     if (type === 'all' || type === 'categories') {
       const categories = await Category.find({
         isActive: true,
@@ -149,7 +139,6 @@ const searchSuggestions = async (req, res, next) => {
       });
     }
 
-    // Tag suggestions
     if (type === 'all' || type === 'tags') {
       const tags = await Tag.find({
         isActive: true,
@@ -168,7 +157,6 @@ const searchSuggestions = async (req, res, next) => {
       });
     }
 
-    // Limit total suggestions
     const limitedSuggestions = suggestions.slice(0, parseInt(limit));
 
     sendApiResponse(res, 200, true, 'Suggestions fetched', limitedSuggestions);
@@ -187,19 +175,15 @@ const advancedSearch = async (req, res, next) => {
 
     const { skip, limit: limitNum } = getPagination(page, limit);
 
-    // Build query
     const searchQuery = { status: 'published' };
 
-    // Search term
     if (query) {
       searchQuery.$or = [
         { title: { $regex: query, $options: 'i' } },
-        { excerpt: { $regex: query, $options: 'i' } },
-        { content: { $regex: query, $options: 'i' } }
+        { excerpt: { $regex: query, $options: 'i' } }
       ];
     }
 
-    // Apply filters
     if (filters) {
       if (filters.categories && filters.categories.length > 0) {
         const categories = await Category.find({
@@ -234,7 +218,6 @@ const advancedSearch = async (req, res, next) => {
       }
     }
 
-    // Sort
     let sortOption = { publishDate: -1 };
     if (sort) {
       switch (sort.field) {
