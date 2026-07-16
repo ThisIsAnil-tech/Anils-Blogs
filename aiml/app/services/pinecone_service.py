@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 import time
 from typing import List, Dict, Any, Optional, Tuple
 import pinecone
@@ -18,9 +18,8 @@ class PineconeService:
         self._initialize_pinecone()
 
     def _initialize_pinecone(self):
-        """Initialize Pinecone connection"""
         try:
-            # Initialize Pinecone
+            # Initialize Pinecone with new API
             self.pc = Pinecone(api_key=settings.PINECONE_API_KEY)
             
             # Check if index exists
@@ -39,6 +38,7 @@ class PineconeService:
                     )
                 )
                 # Wait for index to be ready
+                import time
                 while not self.pc.describe_index(self.index_name).status.get('ready', False):
                     time.sleep(1)
             
@@ -50,10 +50,8 @@ class PineconeService:
         except Exception as e:
             logger.error(f"Failed to initialize Pinecone: {str(e)}")
             self.initialized = False
-            raise
 
     def _get_circuit_breaker(self):
-        """Get or create circuit breaker for Pinecone"""
         return circuit_breaker_manager.get_or_create(
             name="pinecone",
             failure_threshold=3,
@@ -61,66 +59,37 @@ class PineconeService:
             half_open_timeout=30
         )
 
-    async def upsert_vectors(
-        self,
-        vectors: List[Tuple[str, List[float], Dict[str, Any]]],
-        namespace: str = ""
-    ) -> bool:
-        """
-        Upsert vectors to Pinecone
-        vectors: List of (id, embedding, metadata)
-        """
+    async def upsert_vectors(self, vectors: List[Tuple[str, List[float], Dict[str, Any]]], namespace: str = "") -> bool:
         if not self.initialized:
             self._initialize_pinecone()
 
         def _upsert():
             try:
-                # Prepare vectors for upsert
                 vector_list = [
-                    {
-                        "id": vec_id,
-                        "values": embedding,
-                        "metadata": metadata
-                    }
+                    {"id": vec_id, "values": embedding, "metadata": metadata}
                     for vec_id, embedding, metadata in vectors
                 ]
                 
-                # Upsert in batches
                 batch_size = 100
                 for i in range(0, len(vector_list), batch_size):
                     batch = vector_list[i:i + batch_size]
-                    self.index.upsert(
-                        vectors=batch,
-                        namespace=namespace
-                    )
-                    logger.info(f"Upserted batch {i//batch_size + 1} of {len(vector_list)//batch_size + 1}")
+                    self.index.upsert(vectors=batch, namespace=namespace)
+                    logger.info(f"Upserted batch {i//batch_size + 1}")
                 
-                logger.info(f"Successfully upserted {len(vectors)} vectors to Pinecone")
+                logger.info(f"Successfully upserted {len(vectors)} vectors")
                 return True
-                
             except Exception as e:
-                logger.error(f"Error upserting vectors to Pinecone: {str(e)}")
+                logger.error(f"Error upserting vectors: {str(e)}")
                 raise
 
         try:
             circuit_breaker = self._get_circuit_breaker()
-            result = circuit_breaker.call(_upsert)
-            return result
+            return circuit_breaker.call(_upsert)
         except Exception as e:
-            logger.error(f"Circuit breaker tripped for Pinecone upsert: {str(e)}")
+            logger.error(f"Circuit breaker tripped: {str(e)}")
             raise
 
-    async def query_vectors(
-        self,
-        embedding: List[float],
-        top_k: int = 5,
-        filter: Optional[Dict] = None,
-        namespace: str = "",
-        include_metadata: bool = True
-    ) -> List[Dict[str, Any]]:
-        """
-        Query vectors from Pinecone
-        """
+    async def query_vectors(self, embedding: List[float], top_k: int = 5, filter: Optional[Dict] = None, namespace: str = "", include_metadata: bool = True) -> List[Dict[str, Any]]:
         if not self.initialized:
             self._initialize_pinecone()
 
@@ -144,136 +113,94 @@ class PineconeService:
                 
                 logger.info(f"Query returned {len(results)} results")
                 return results
-                
             except Exception as e:
                 logger.error(f"Error querying Pinecone: {str(e)}")
                 raise
 
         try:
             circuit_breaker = self._get_circuit_breaker()
-            result = circuit_breaker.call(_query)
-            return result
+            return circuit_breaker.call(_query)
         except Exception as e:
-            logger.error(f"Circuit breaker tripped for Pinecone query: {str(e)}")
-            raise
+            logger.error(f"Circuit breaker tripped: {str(e)}")
+            return []
 
-    async def delete_vectors(
-        self,
-        ids: List[str],
-        namespace: str = ""
-    ) -> bool:
-        """
-        Delete vectors from Pinecone
-        """
+    async def delete_vectors(self, ids: List[str], namespace: str = "") -> bool:
         if not self.initialized:
             self._initialize_pinecone()
 
         def _delete():
             try:
-                self.index.delete(
-                    ids=ids,
-                    namespace=namespace
-                )
-                logger.info(f"Deleted {len(ids)} vectors from Pinecone")
+                self.index.delete(ids=ids, namespace=namespace)
+                logger.info(f"Deleted {len(ids)} vectors")
                 return True
-                
             except Exception as e:
-                logger.error(f"Error deleting vectors from Pinecone: {str(e)}")
+                logger.error(f"Error deleting vectors: {str(e)}")
                 raise
 
         try:
             circuit_breaker = self._get_circuit_breaker()
-            result = circuit_breaker.call(_delete)
-            return result
+            return circuit_breaker.call(_delete)
         except Exception as e:
-            logger.error(f"Circuit breaker tripped for Pinecone delete: {str(e)}")
-            raise
+            logger.error(f"Circuit breaker tripped: {str(e)}")
+            return False
 
-    async def delete_by_filter(
-        self,
-        filter: Dict[str, Any],
-        namespace: str = ""
-    ) -> bool:
-        """
-        Delete vectors by filter
-        """
+    async def delete_by_filter(self, filter: Dict[str, Any], namespace: str = "") -> bool:
         if not self.initialized:
             self._initialize_pinecone()
 
         def _delete_by_filter():
             try:
-                self.index.delete(
-                    filter=filter,
-                    namespace=namespace
-                )
-                logger.info(f"Deleted vectors with filter {filter} from Pinecone")
+                self.index.delete(filter=filter, namespace=namespace)
+                logger.info(f"Deleted vectors with filter: {filter}")
                 return True
-                
             except Exception as e:
-                logger.error(f"Error deleting vectors by filter from Pinecone: {str(e)}")
+                logger.error(f"Error deleting vectors by filter: {str(e)}")
                 raise
 
         try:
             circuit_breaker = self._get_circuit_breaker()
-            result = circuit_breaker.call(_delete_by_filter)
-            return result
+            return circuit_breaker.call(_delete_by_filter)
         except Exception as e:
-            logger.error(f"Circuit breaker tripped for Pinecone delete by filter: {str(e)}")
-            raise
+            logger.error(f"Circuit breaker tripped: {str(e)}")
+            return False
 
     async def delete_all_vectors(self, namespace: str = "") -> bool:
-        """
-        Delete all vectors in namespace
-        """
         try:
-            # Delete all vectors by using empty filter
             return await self.delete_by_filter({}, namespace)
         except Exception as e:
             logger.error(f"Error deleting all vectors: {str(e)}")
             return False
 
     async def get_index_stats(self) -> Dict[str, Any]:
-        """
-        Get index statistics
-        """
         if not self.initialized:
             self._initialize_pinecone()
 
         def _get_stats():
             try:
-                stats = self.index.describe_index_stats()
-                return stats
-                
+                return self.index.describe_index_stats()
             except Exception as e:
                 logger.error(f"Error getting index stats: {str(e)}")
-                raise
+                return {}
 
         try:
             circuit_breaker = self._get_circuit_breaker()
-            result = circuit_breaker.call(_get_stats)
-            return result
+            return circuit_breaker.call(_get_stats)
         except Exception as e:
-            logger.error(f"Circuit breaker tripped for Pinecone stats: {str(e)}")
+            logger.error(f"Circuit breaker tripped: {str(e)}")
             return {}
 
     async def reset_index(self):
-        """Reset the Pinecone index"""
         try:
-            # Delete all vectors
             await self.delete_all_vectors()
-            
-            # Recreate index
             self.pc.delete_index(self.index_name)
-            time.sleep(5)  # Wait for deletion
+            import time
+            time.sleep(5)
             self._initialize_pinecone()
-            
             logger.info(f"Successfully reset Pinecone index: {self.index_name}")
             return True
-            
         except Exception as e:
             logger.error(f"Error resetting Pinecone index: {str(e)}")
             return False
 
     def is_initialized(self) -> bool:
-        """Check if Pinecone is initialized"""
         return self.initialized

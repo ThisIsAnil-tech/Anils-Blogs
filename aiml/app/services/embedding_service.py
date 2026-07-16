@@ -1,5 +1,5 @@
-import logging
-from typing import List, Union
+﻿import logging
+from typing import List, Dict, Union, Optional
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import torch
@@ -9,13 +9,12 @@ logger = logging.getLogger(__name__)
 
 class EmbeddingService:
     def __init__(self):
-        self.model_name = "all-MiniLM-L6-v2"  # 384 dimension
+        self.model_name = "all-MiniLM-L6-v2"
         self.model = None
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self._load_model()
 
     def _load_model(self):
-        """Load the embedding model"""
         try:
             logger.info(f"Loading embedding model: {self.model_name}")
             self.model = SentenceTransformer(self.model_name, device=self.device)
@@ -26,21 +25,16 @@ class EmbeddingService:
             raise
 
     async def generate_embedding(self, text: str) -> List[float]:
-        """
-        Generate embedding for a single text
-        """
         if not self.model:
             self._load_model()
         
         try:
-            # Generate embedding
             embedding = self.model.encode(
                 text,
                 convert_to_tensor=True,
                 show_progress_bar=False
             )
             
-            # Convert to list and normalize
             embedding_np = embedding.cpu().numpy()
             embedding_normalized = embedding_np / np.linalg.norm(embedding_np)
             
@@ -51,14 +45,11 @@ class EmbeddingService:
             raise
 
     async def generate_embeddings_batch(self, texts: List[str]) -> List[List[float]]:
-        """
-        Generate embeddings for multiple texts
-        """
+        
         if not self.model:
             self._load_model()
         
         try:
-            # Generate embeddings in batch
             embeddings = self.model.encode(
                 texts,
                 convert_to_tensor=True,
@@ -66,7 +57,6 @@ class EmbeddingService:
                 batch_size=32
             )
             
-            # Normalize embeddings
             embeddings_np = embeddings.cpu().numpy()
             normalized_embeddings = []
             
@@ -85,18 +75,10 @@ class EmbeddingService:
         self,
         chunks: List[Dict[str, Union[str, int]]]
     ) -> List[Dict]:
-        """
-        Generate embeddings for chunks
-        chunks: List of {'text': str, 'index': int, 'file_id': str, 'file_name': str}
-        """
         try:
-            # Extract texts
             texts = [chunk['text'] for chunk in chunks]
-            
-            # Generate embeddings
             embeddings = await self.generate_embeddings_batch(texts)
             
-            # Combine with chunk metadata
             result = []
             for chunk, embedding in zip(chunks, embeddings):
                 result.append({
@@ -117,11 +99,7 @@ class EmbeddingService:
         file_name: str,
         chunks: List[str]
     ) -> List[Dict]:
-        """
-        Generate embeddings for all chunks of a file
-        """
         try:
-            # Prepare chunk data
             chunk_data = []
             for idx, chunk_text in enumerate(chunks):
                 chunk_data.append({
@@ -131,7 +109,6 @@ class EmbeddingService:
                     'file_name': file_name
                 })
             
-            # Generate embeddings
             result = await self.generate_chunk_embeddings(chunk_data)
             return result
             
@@ -140,11 +117,9 @@ class EmbeddingService:
             raise
 
     def get_embedding_dimension(self) -> int:
-        """Get the dimension of embeddings"""
         if self.model:
             return self.model.get_sentence_embedding_dimension()
-        return 384  # Default for all-MiniLM-L6-v2
+        return 384
 
     def is_available(self) -> bool:
-        """Check if model is loaded"""
         return self.model is not None

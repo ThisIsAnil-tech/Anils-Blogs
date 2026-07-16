@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from typing import Optional
 from fastapi import APIRouter, Request, HTTPException, BackgroundTasks, Depends
 from datetime import datetime
@@ -402,21 +402,4 @@ async def run_sync(force: bool = False):
         sync_in_progress = False
 
 
-# Error handlers
-@router.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    return ErrorResponse(
-        error=exc.detail,
-        error_code=f"HTTP_{exc.status_code}",
-        details={"path": str(request.url)}
-    )
 
-
-@router.exception_handler(Exception)
-async def general_exception_handler(request: Request, exc: Exception):
-    logger.error(f"Unhandled exception: {str(exc)}")
-    return ErrorResponse(
-        error="Internal server error",
-        error_code="INTERNAL_ERROR",
-        details={"path": str(request.url), "error": str(exc)}
-    )

@@ -1,11 +1,11 @@
-import os
+﻿import os
 from typing import Optional
-from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
 load_dotenv()
 
-class Settings(BaseSettings):
+class Settings:
+    
     # Mega.nz Configuration
     MEGA_EMAIL: str = os.getenv("MEGA_EMAIL", "")
     MEGA_PASSWORD: str = os.getenv("MEGA_PASSWORD", "")
@@ -45,9 +45,5 @@ class Settings(BaseSettings):
     # Security
     MAX_QUERY_LENGTH: int = int(os.getenv("MAX_QUERY_LENGTH", "500"))
     ENABLE_CONTENT_MODERATION: bool = os.getenv("ENABLE_CONTENT_MODERATION", "True").lower() == "true"
-
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
 
 settings = Settings()
