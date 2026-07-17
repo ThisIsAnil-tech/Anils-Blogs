@@ -15,3 +15,4 @@ aiml/.mypy_cache/
 aiml/.coverage
 aiml/logs/
 aiml/data/
+frontend/.env.example
