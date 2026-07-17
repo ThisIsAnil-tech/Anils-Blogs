@@ -4,15 +4,30 @@ const { validationResult } = require('express-validator');
 const { sendApiResponse } = require('../utils/helpers/apiResponse');
 const { getPagination } = require('../utils/helpers/paginationHelper');
 const logger = require('../utils/logger');
+const { cache } = require('../config/redis');
 
 // @desc    Get all categories
 // @route   GET /api/categories
 // @access  Public
 const getCategories = async (req, res, next) => {
   try {
+    // Try cache first
+    const cacheKey = 'categories:all';
+    if (cache.isEnabled()) {
+      const cached = await cache.get(cacheKey);
+      if (cached) {
+        return sendApiResponse(res, 200, true, 'Categories fetched successfully (cached)', cached);
+      }
+    }
+
     const categories = await Category.find({ isActive: true })
       .sort({ order: 1, name: 1 })
       .populate('subcategories');
+
+    // Cache for 1 hour
+    if (cache.isEnabled()) {
+      await cache.set(cacheKey, categories, 3600);
+    }
 
     sendApiResponse(res, 200, true, 'Categories fetched successfully', categories);
   } catch (error) {
@@ -28,11 +43,25 @@ const getCategoryBySlug = async (req, res, next) => {
   try {
     const { slug } = req.params;
 
+    // Try cache first
+    const cacheKey = `category:${slug}`;
+    if (cache.isEnabled()) {
+      const cached = await cache.get(cacheKey);
+      if (cached) {
+        return sendApiResponse(res, 200, true, 'Category fetched successfully (cached)', cached);
+      }
+    }
+
     const category = await Category.findOne({ slug, isActive: true })
       .populate('subcategories');
 
     if (!category) {
       return sendApiResponse(res, 404, false, 'Category not found');
+    }
+
+    // Cache for 1 hour
+    if (cache.isEnabled()) {
+      await cache.set(cacheKey, category, 3600);
     }
 
     sendApiResponse(res, 200, true, 'Category fetched successfully', category);
@@ -50,6 +79,15 @@ const getCategoryBlogs = async (req, res, next) => {
     const { slug } = req.params;
     const { page = 1, limit = 12 } = req.query;
 
+    // Try cache first
+    const cacheKey = `category:${slug}:blogs:page${page}:limit${limit}`;
+    if (cache.isEnabled()) {
+      const cached = await cache.get(cacheKey);
+      if (cached) {
+        return sendApiResponse(res, 200, true, 'Category blogs fetched successfully (cached)', cached);
+      }
+    }
+
     const category = await Category.findOne({ slug, isActive: true });
     if (!category) {
       return sendApiResponse(res, 404, false, 'Category not found');
@@ -57,22 +95,25 @@ const getCategoryBlogs = async (req, res, next) => {
 
     const { skip, limit: limitNum } = getPagination(page, limit);
 
-    const blogs = await Blog.find({
-      category: category._id,
-      status: 'published'
-    })
-      .sort({ publishDate: -1 })
-      .skip(skip)
-      .limit(limitNum)
-      .populate('author', 'username fullName')
-      .populate('tags', 'name slug');
+    const [blogs, total] = await Promise.all([
+      Blog.find({
+        category: category._id,
+        status: 'published'
+      })
+        .sort({ publishDate: -1 })
+        .skip(skip)
+        .limit(limitNum)
+        .populate('author', 'username fullName')
+        .populate('tags', 'name slug')
+        .select('title slug featuredImage publishDate viewCount likeCount commentCount excerpt'),
+      
+      Blog.countDocuments({
+        category: category._id,
+        status: 'published'
+      })
+    ]);
 
-    const total = await Blog.countDocuments({
-      category: category._id,
-      status: 'published'
-    });
-
-    sendApiResponse(res, 200, true, 'Category blogs fetched successfully', {
+    const result = {
       blogs,
       pagination: {
         total,
@@ -80,7 +121,14 @@ const getCategoryBlogs = async (req, res, next) => {
         limit: limitNum,
         pages: Math.ceil(total / limitNum)
       }
-    });
+    };
+
+    // Cache for 30 minutes
+    if (cache.isEnabled()) {
+      await cache.set(cacheKey, result, 1800);
+    }
+
+    sendApiResponse(res, 200, true, 'Category blogs fetched successfully', result);
   } catch (error) {
     logger.error(`Get category blogs error: ${error.message}`);
     next(error);
@@ -94,10 +142,26 @@ const createCategory = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return sendApiResponse(res, 400, false, 'Validation error', errors.array());
+      return sendApiResponse(res, 400, false, 'Validation error', null, errors.array());
     }
 
-    const { name, description, icon, color, parentCategory, isActive, order, metaTitle, metaDescription } = req.body;
+    const { 
+      name, 
+      description, 
+      icon, 
+      color, 
+      parentCategory, 
+      isActive, 
+      order, 
+      metaTitle, 
+      metaDescription 
+    } = req.body;
+
+    // Check if category already exists
+    const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
+    if (existingCategory) {
+      return sendApiResponse(res, 400, false, 'Category with this name already exists');
+    }
 
     const category = await Category.create({
       name,
@@ -105,12 +169,18 @@ const createCategory = async (req, res, next) => {
       icon,
       color,
       parentCategory,
-      isActive,
-      order,
+      isActive: isActive !== undefined ? isActive : true,
+      order: order || 0,
       metaTitle,
       metaDescription
     });
 
+    // Clear cache
+    if (cache.isEnabled()) {
+      await cache.delPattern('categories:*');
+    }
+
+    logger.info(`Category created: ${category.name} by ${req.user.username}`);
     sendApiResponse(res, 201, true, 'Category created successfully', category);
   } catch (error) {
     logger.error(`Create category error: ${error.message}`);
@@ -124,13 +194,35 @@ const createCategory = async (req, res, next) => {
 const updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name, description, icon, color, parentCategory, isActive, order, metaTitle, metaDescription } = req.body;
+    const { 
+      name, 
+      description, 
+      icon, 
+      color, 
+      parentCategory, 
+      isActive, 
+      order, 
+      metaTitle, 
+      metaDescription 
+    } = req.body;
 
     const category = await Category.findById(id);
     if (!category) {
       return sendApiResponse(res, 404, false, 'Category not found');
     }
 
+    // Check if name already exists (excluding current category)
+    if (name && name !== category.name) {
+      const existingCategory = await Category.findOne({ 
+        name: { $regex: new RegExp(`^${name}$`, 'i') },
+        _id: { $ne: id }
+      });
+      if (existingCategory) {
+        return sendApiResponse(res, 400, false, 'Category with this name already exists');
+      }
+    }
+
+    // Update fields
     if (name) category.name = name;
     if (description !== undefined) category.description = description;
     if (icon !== undefined) category.icon = icon;
@@ -143,6 +235,13 @@ const updateCategory = async (req, res, next) => {
 
     await category.save();
 
+    // Clear cache
+    if (cache.isEnabled()) {
+      await cache.delPattern('categories:*');
+      await cache.delPattern(`category:${category.slug}`);
+    }
+
+    logger.info(`Category updated: ${category.name} by ${req.user.username}`);
     sendApiResponse(res, 200, true, 'Category updated successfully', category);
   } catch (error) {
     logger.error(`Update category error: ${error.message}`);
@@ -162,8 +261,31 @@ const deleteCategory = async (req, res, next) => {
       return sendApiResponse(res, 404, false, 'Category not found');
     }
 
+    // Check if category has blogs
+    const blogCount = await Blog.countDocuments({ 
+      category: id, 
+      status: 'published' 
+    });
+
+    if (blogCount > 0) {
+      return sendApiResponse(res, 400, false, `Cannot delete category with ${blogCount} blogs. Remove or reassign blogs first.`);
+    }
+
+    // Check if category has subcategories
+    const subcategoryCount = await Category.countDocuments({ parentCategory: id });
+    if (subcategoryCount > 0) {
+      return sendApiResponse(res, 400, false, `Cannot delete category with ${subcategoryCount} subcategories. Delete or reassign subcategories first.`);
+    }
+
     await category.deleteOne();
 
+    // Clear cache
+    if (cache.isEnabled()) {
+      await cache.delPattern('categories:*');
+      await cache.delPattern(`category:${category.slug}`);
+    }
+
+    logger.info(`Category deleted: ${category.name} by ${req.user.username}`);
     sendApiResponse(res, 200, true, 'Category deleted successfully');
   } catch (error) {
     logger.error(`Delete category error: ${error.message}`);

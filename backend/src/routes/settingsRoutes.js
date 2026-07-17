@@ -4,54 +4,88 @@ const router = express.Router();
 // Import controllers
 const settingsController = require('../controllers/settingsController');
 
-// Destructure with fallbacks
+// Destructure with proper validation - NO FALLBACKS
 const {
-  getSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getSocialSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateSocialSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getEmailSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateEmailSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getSecuritySettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateSecuritySettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getAnalyticsSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateAnalyticsSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getBackupSettings = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateBackupSettings = (req, res) => res.status(501).json({ message: 'Not implemented' })
+  getSettings,
+  updateSettings,
+  getSocialSettings,
+  updateSocialSettings,
+  getEmailSettings,
+  updateEmailSettings,
+  getSecuritySettings,
+  updateSecuritySettings,
+  getAnalyticsSettings,
+  updateAnalyticsSettings,
+  getBackupSettings,
+  updateBackupSettings
 } = settingsController;
+
+// Validate that all required controllers exist
+const requiredControllers = [
+  'getSettings',
+  'updateSettings',
+  'getSocialSettings',
+  'updateSocialSettings',
+  'getEmailSettings',
+  'updateEmailSettings',
+  'getSecuritySettings',
+  'updateSecuritySettings',
+  'getAnalyticsSettings',
+  'updateAnalyticsSettings',
+  'getBackupSettings',
+  'updateBackupSettings'
+];
+
+const missingControllers = requiredControllers.filter(name => !settingsController[name]);
+if (missingControllers.length > 0) {
+  console.error('❌ Missing settings controllers:', missingControllers.join(', '));
+  if (process.env.NODE_ENV !== 'production') {
+    throw new Error(`Missing controllers: ${missingControllers.join(', ')}`);
+  }
+}
 
 const { protect, isAdmin } = require('../middleware/auth');
 const { generalLimiter } = require('../middleware/rateLimiter');
+const { logAdminActivity } = require('../middleware/adminAuth');
+const { 
+  generalSettingsValidator,
+  socialSettingsValidator,
+  emailSettingsValidator,
+  securitySettingsValidator,
+  analyticsSettingsValidator,
+  backupSettingsValidator
+} = require('../utils/validators/settingsValidator');
 
 // ============================================
 // Admin Routes (All protected)
 // ============================================
 router.use(protect);
 router.use(isAdmin);
+router.use(logAdminActivity('Settings Action'));
 router.use(generalLimiter);
 
 // General settings
 router.get('/', getSettings);
-router.put('/', updateSettings);
+router.put('/', generalSettingsValidator, updateSettings);
 
 // Social settings
 router.get('/social', getSocialSettings);
-router.put('/social', updateSocialSettings);
+router.put('/social', socialSettingsValidator, updateSocialSettings);
 
 // Email settings
 router.get('/email', getEmailSettings);
-router.put('/email', updateEmailSettings);
+router.put('/email', emailSettingsValidator, updateEmailSettings);
 
 // Security settings
 router.get('/security', getSecuritySettings);
-router.put('/security', updateSecuritySettings);
+router.put('/security', securitySettingsValidator, updateSecuritySettings);
 
 // Analytics settings
 router.get('/analytics', getAnalyticsSettings);
-router.put('/analytics', updateAnalyticsSettings);
+router.put('/analytics', analyticsSettingsValidator, updateAnalyticsSettings);
 
 // Backup settings
 router.get('/backup', getBackupSettings);
-router.put('/backup', updateBackupSettings);
+router.put('/backup', backupSettingsValidator, updateBackupSettings);
 
 module.exports = router;

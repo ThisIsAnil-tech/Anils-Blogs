@@ -10,11 +10,13 @@ const validate = (req, res, next) => {
   }
 
   const extractedErrors = errors.array().map(err => ({
-    field: err.param,
-    message: err.msg
+    field: err.param || err.path,
+    message: err.msg,
+    value: err.value
   }));
 
-  return sendApiResponse(res, 400, false, 'Validation error', extractedErrors);
+  logger.warn(`Validation error: ${JSON.stringify(extractedErrors)}`);
+  return sendApiResponse(res, 400, false, 'Validation error', null, extractedErrors);
 };
 
 // @desc    Validation rules for login
@@ -23,7 +25,8 @@ const loginValidation = [
     .notEmpty().withMessage('Username is required')
     .isString().withMessage('Username must be a string')
     .trim()
-    .isLength({ min: 3, max: 30 }).withMessage('Username must be between 3 and 30 characters'),
+    .isLength({ min: 3, max: 30 }).withMessage('Username must be between 3 and 30 characters')
+    .matches(/^[a-zA-Z0-9_]+$/).withMessage('Username can only contain letters, numbers, and underscores'),
   body('password')
     .notEmpty().withMessage('Password is required')
     .isString().withMessage('Password must be a string')
@@ -56,6 +59,9 @@ const createBlogValidation = [
   body('tags')
     .optional()
     .isArray().withMessage('Tags must be an array'),
+  body('tags.*')
+    .optional()
+    .isMongoId().withMessage('Invalid tag ID'),
   body('status')
     .optional()
     .isIn(['draft', 'published', 'scheduled', 'archived']).withMessage('Invalid status'),
@@ -152,10 +158,12 @@ const idValidation = [
 const paginationValidation = [
   query('page')
     .optional()
-    .isInt({ min: 1 }).withMessage('Page must be a positive integer'),
+    .isInt({ min: 1 }).withMessage('Page must be a positive integer')
+    .toInt(),
   query('limit')
     .optional()
-    .isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100'),
+    .isInt({ min: 1, max: 100 }).withMessage('Limit must be between 1 and 100')
+    .toInt(),
   validate
 ];
 
@@ -164,7 +172,8 @@ const slugValidation = [
   param('slug')
     .notEmpty().withMessage('Slug is required')
     .isString().withMessage('Slug must be a string')
-    .trim(),
+    .trim()
+    .matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).withMessage('Invalid slug format'),
   validate
 ];
 

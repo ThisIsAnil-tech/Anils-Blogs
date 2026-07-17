@@ -18,57 +18,78 @@ const routes = require('./routes');
 
 // Import logger
 const logger = require('./utils/logger');
-const { connectRedis } = require('./config/redis');
 
 // Initialize express app
 const app = express();
 
-connectRedis().then(() => {
-  logger.info('Redis initialization complete');
-}).catch((err) => {
-  logger.warn(`Redis initialization failed: ${err.message}`);
-});
+// Initialize Redis asynchronously (non-blocking)
+const initRedis = async () => {
+  try {
+    const { connectRedis } = require('./config/redis');
+    const client = await connectRedis();
+    if (client) {
+      logger.info('✅ Redis initialization complete');
+    } else {
+      logger.info('ℹ️  Redis not enabled');
+    }
+  } catch (err) {
+    logger.warn(`Redis initialization failed: ${err.message}`);
+  }
+};
+
+// Don't await - let it run in background
+initRedis();
 
 // =====================
 // Security Middleware
 // =====================
 
-// Helmet - Security headers
-app.use(helmet({
+// Helmet - Security headers with production-safe settings
+const helmetConfig = {
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "https:", "data:"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       fontSrc: ["'self'", "https:", "data:"],
       connectSrc: ["'self'", "https:"],
       frameSrc: ["'self'"],
       objectSrc: ["'none'"],
-      upgradeInsecureRequests: []
+      upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null
     }
   },
-  crossOriginEmbedderPolicy: true,
-  crossOriginOpenerPolicy: true,
-  crossOriginResourcePolicy: { policy: "cross-origin" },
+  crossOriginEmbedderPolicy: process.env.NODE_ENV === 'production',
+  crossOriginOpenerPolicy: process.env.NODE_ENV === 'production',
+  crossOriginResourcePolicy: { policy: process.env.NODE_ENV === 'production' ? "cross-origin" : "same-origin" },
   dnsPrefetchControl: true,
   frameguard: { action: "deny" },
   hidePoweredBy: true,
-  hsts: true,
+  hsts: process.env.NODE_ENV === 'production',
   ieNoOpen: true,
   noSniff: true,
   originAgentCluster: true,
   permittedCrossDomainPolicies: true,
   referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   xssFilter: true
-}));
+};
+
+app.use(helmet(helmetConfig));
 
 // =====================
 // CORS Configuration
 // =====================
 
+const corsOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : [];
+
+// In production, require CORS origins to be set
+if (process.env.NODE_ENV === 'production' && corsOrigins.length === 0) {
+  logger.warn('⚠️  CORS_ORIGIN not set in production. Using restrictive defaults.');
+  corsOrigins.push('http://localhost:3000', 'http://localhost:5000');
+}
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*',
+  origin: corsOrigins.length > 0 ? corsOrigins : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'x-api-key'],
   exposedHeaders: ['X-Total-Count', 'X-Pagination-Page', 'X-Pagination-Limit', 'X-Pagination-Total'],
@@ -97,22 +118,37 @@ app.use(compression({
 // Logging
 // =====================
 
+// Ensure logs directory exists
+const logDir = path.join(__dirname, '../logs');
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
+
 // Create a write stream for access logs
 const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, '../logs/access.log'),
+  path.join(logDir, 'access.log'),
   { flags: 'a' }
 );
 
-// Morgan logging
-app.use(morgan('combined', { stream: accessLogStream }));
-app.use(morgan('dev')); // Console logging in development
+// Morgan logging with proper error handling
+app.use(morgan('combined', { 
+  stream: accessLogStream,
+  skip: (req) => req.path === '/health'
+}));
+
+// Console logging in development only
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 
 // Custom request logging
 app.use((req, res, next) => {
   const startTime = Date.now();
   res.on('finish', () => {
     const duration = Date.now() - startTime;
-    logger.info(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+    if (req.path !== '/health') {
+      logger.info(`${req.method} ${req.originalUrl} - ${res.statusCode} - ${duration}ms`);
+    }
   });
   next();
 });
@@ -158,9 +194,21 @@ app.use(detectDevice);
 app.use(generalLimiter);
 
 // =====================
-// Static Files
+// Static Files with Security
 // =====================
 
+// Serve static files with security headers
+const serveStaticOptions = {
+  setHeaders: (res, path) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    // Prevent direct access to sensitive files
+    if (path.includes('.env') || path.includes('.git')) {
+      res.status(403).end('Forbidden');
+    }
+  }
+};
+
+// Cloudinary webhook endpoint
 app.route('/api/webhooks/cloudinary')
   .get((req, res) => {
     res.status(200).json({
@@ -169,13 +217,14 @@ app.route('/api/webhooks/cloudinary')
     });
   })
   .post(express.json(), (req, res) => {
-    console.log('Webhook received:', req.body);
+    logger.info('Cloudinary webhook received', { body: req.body });
     // Process the notification
     res.status(200).send('OK');
   });
 
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/public', express.static(path.join(__dirname, '../public')));
+// Serve uploads with security
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'), serveStaticOptions));
+app.use('/public', express.static(path.join(__dirname, '../public'), serveStaticOptions));
 
 // =====================
 // Health Check
@@ -187,8 +236,7 @@ app.get('/health', (req, res) => {
     message: 'Server is healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    memory: process.memoryUsage(),
-    cpu: process.cpuUsage()
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -252,35 +300,6 @@ app.use(notFound);
 
 // Global error handler
 app.use(errorHandler);
-
-// =====================
-// Unhandled Rejection & Exception Handling
-// =====================
-
-process.on('unhandledRejection', (err) => {
-  logger.error('UNHANDLED REJECTION! 💥 Shutting down...');
-  logger.error(err.name, err.message);
-  process.exit(1);
-});
-
-process.on('uncaughtException', (err) => {
-  logger.error('UNCAUGHT EXCEPTION! 💥 Shutting down...');
-  logger.error(err.name, err.message);
-  process.exit(1);
-});
-
-// =====================
-// Graceful Shutdown
-// =====================
-
-const gracefulShutdown = () => {
-  logger.info('Received shutdown signal. Closing server gracefully...');
-  // Close database connections, Redis, etc.
-  process.exit(0);
-};
-
-process.on('SIGTERM', gracefulShutdown);
-process.on('SIGINT', gracefulShutdown);
 
 // =====================
 // Export App

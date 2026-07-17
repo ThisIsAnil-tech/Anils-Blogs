@@ -4,13 +4,33 @@ const Tag = require('../models/Tag');
 const { sendApiResponse } = require('../utils/helpers/apiResponse');
 const { getPagination } = require('../utils/helpers/paginationHelper');
 const logger = require('../utils/logger');
+const { cache } = require('../config/redis');
 
 // @desc    Search blogs
 // @route   GET /api/search
 // @access  Public
 const searchBlogs = async (req, res, next) => {
   try {
-    const { q, category, tag, sort = 'relevance', page = 1, limit = 12, dateFrom, dateTo, status } = req.query;
+    const { 
+      q, 
+      category, 
+      tag, 
+      sort = 'relevance', 
+      page = 1, 
+      limit = 12, 
+      dateFrom, 
+      dateTo, 
+      status 
+    } = req.query;
+
+    // Try cache first for common searches
+    const cacheKey = `search:${q}:${category || 'none'}:${tag || 'none'}:${sort}:${page}:${limit}`;
+    if (cache.isEnabled() && q.length > 2) {
+      const cached = await cache.get(cacheKey);
+      if (cached) {
+        return sendApiResponse(res, 200, true, 'Search results fetched (cached)', cached);
+      }
+    }
 
     const { skip, limit: limitNum } = getPagination(page, limit);
 
@@ -19,7 +39,8 @@ const searchBlogs = async (req, res, next) => {
     if (q) {
       query.$or = [
         { title: { $regex: q, $options: 'i' } },
-        { excerpt: { $regex: q, $options: 'i' } }
+        { excerpt: { $regex: q, $options: 'i' } },
+        { 'seoSettings.keywords': { $regex: q, $options: 'i' } }
       ];
     }
 
@@ -64,17 +85,20 @@ const searchBlogs = async (req, res, next) => {
         sortOption = { publishDate: -1 };
     }
 
-    const blogs = await Blog.find(query)
-      .sort(sortOption)
-      .skip(skip)
-      .limit(limitNum)
-      .populate('category', 'name slug')
-      .populate('tags', 'name slug')
-      .populate('author', 'username fullName');
+    const [blogs, total] = await Promise.all([
+      Blog.find(query)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNum)
+        .populate('category', 'name slug')
+        .populate('tags', 'name slug')
+        .populate('author', 'username fullName')
+        .select('title slug featuredImage publishDate viewCount likeCount commentCount excerpt'),
+      
+      Blog.countDocuments(query)
+    ]);
 
-    const total = await Blog.countDocuments(query);
-
-    sendApiResponse(res, 200, true, 'Search results fetched', {
+    const result = {
       blogs,
       pagination: {
         total,
@@ -83,7 +107,14 @@ const searchBlogs = async (req, res, next) => {
         pages: Math.ceil(total / limitNum)
       },
       query: q
-    });
+    };
+
+    // Cache for 10 minutes if search term is long enough
+    if (cache.isEnabled() && q.length > 2 && parseInt(page) <= 3) {
+      await cache.set(cacheKey, result, 600);
+    }
+
+    sendApiResponse(res, 200, true, 'Search results fetched', result);
   } catch (error) {
     logger.error(`Search blogs error: ${error.message}`);
     next(error);
@@ -101,22 +132,35 @@ const searchSuggestions = async (req, res, next) => {
       return sendApiResponse(res, 200, true, 'Suggestions fetched', []);
     }
 
+    // Try cache first
+    const cacheKey = `suggestions:${q}:${type}:${limit}`;
+    if (cache.isEnabled()) {
+      const cached = await cache.get(cacheKey);
+      if (cached) {
+        return sendApiResponse(res, 200, true, 'Suggestions fetched (cached)', cached);
+      }
+    }
+
     const suggestions = [];
 
     if (type === 'all' || type === 'blogs') {
       const blogs = await Blog.find({
         status: 'published',
-        title: { $regex: q, $options: 'i' }
+        $or: [
+          { title: { $regex: q, $options: 'i' } },
+          { 'seoSettings.keywords': { $regex: q, $options: 'i' } }
+        ]
       })
         .limit(parseInt(limit))
-        .select('title slug');
+        .select('title slug featuredImage');
 
       blogs.forEach(blog => {
         suggestions.push({
           type: 'blog',
           title: blog.title,
           slug: blog.slug,
-          url: `/blogs/${blog.slug}`
+          url: `/blogs/${blog.slug}`,
+          image: blog.featuredImage
         });
       });
     }
@@ -157,7 +201,19 @@ const searchSuggestions = async (req, res, next) => {
       });
     }
 
+    // Sort suggestions by relevance (exact matches first)
+    suggestions.sort((a, b) => {
+      const aExact = a.title.toLowerCase().startsWith(q.toLowerCase()) ? 0 : 1;
+      const bExact = b.title.toLowerCase().startsWith(q.toLowerCase()) ? 0 : 1;
+      return aExact - bExact;
+    });
+
     const limitedSuggestions = suggestions.slice(0, parseInt(limit));
+
+    // Cache for 1 hour
+    if (cache.isEnabled()) {
+      await cache.set(cacheKey, limitedSuggestions, 3600);
+    }
 
     sendApiResponse(res, 200, true, 'Suggestions fetched', limitedSuggestions);
   } catch (error) {
@@ -180,7 +236,8 @@ const advancedSearch = async (req, res, next) => {
     if (query) {
       searchQuery.$or = [
         { title: { $regex: query, $options: 'i' } },
-        { excerpt: { $regex: query, $options: 'i' } }
+        { excerpt: { $regex: query, $options: 'i' } },
+        { 'seoSettings.keywords': { $regex: query, $options: 'i' } }
       ];
     }
 
@@ -189,14 +246,18 @@ const advancedSearch = async (req, res, next) => {
         const categories = await Category.find({
           slug: { $in: filters.categories }
         });
-        searchQuery.category = { $in: categories.map(c => c._id) };
+        if (categories.length > 0) {
+          searchQuery.category = { $in: categories.map(c => c._id) };
+        }
       }
 
       if (filters.tags && filters.tags.length > 0) {
         const tags = await Tag.find({
           slug: { $in: filters.tags }
         });
-        searchQuery.tags = { $in: tags.map(t => t._id) };
+        if (tags.length > 0) {
+          searchQuery.tags = { $in: tags.map(t => t._id) };
+        }
       }
 
       if (filters.dateRange) {
@@ -215,6 +276,14 @@ const advancedSearch = async (req, res, next) => {
 
       if (filters.isFeatured !== undefined) {
         searchQuery.isFeatured = filters.isFeatured;
+      }
+
+      if (filters.minViews) {
+        searchQuery.viewCount = { $gte: parseInt(filters.minViews) };
+      }
+
+      if (filters.minLikes) {
+        searchQuery.likeCount = { $gte: parseInt(filters.minLikes) };
       }
     }
 
@@ -244,15 +313,18 @@ const advancedSearch = async (req, res, next) => {
       }
     }
 
-    const blogs = await Blog.find(searchQuery)
-      .sort(sortOption)
-      .skip(skip)
-      .limit(limitNum)
-      .populate('category', 'name slug')
-      .populate('tags', 'name slug')
-      .populate('author', 'username fullName');
-
-    const total = await Blog.countDocuments(searchQuery);
+    const [blogs, total] = await Promise.all([
+      Blog.find(searchQuery)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limitNum)
+        .populate('category', 'name slug')
+        .populate('tags', 'name slug')
+        .populate('author', 'username fullName')
+        .select('title slug featuredImage publishDate viewCount likeCount commentCount excerpt'),
+      
+      Blog.countDocuments(searchQuery)
+    ]);
 
     sendApiResponse(res, 200, true, 'Advanced search results fetched', {
       blogs,

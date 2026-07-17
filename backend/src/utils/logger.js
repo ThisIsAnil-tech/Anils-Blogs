@@ -40,14 +40,16 @@ const logFormat = winston.format.combine(
   winston.format.printf(({ timestamp, level, message, stack, ...meta }) => {
     let log = `${timestamp} [${level.toUpperCase()}]: ${message}`;
     
-    // Add stack trace if available
     if (stack) {
       log += `\n${stack}`;
     }
     
-    // Add metadata if available and not empty
-    if (Object.keys(meta).length > 0) {
-      log += `\n${JSON.stringify(meta, null, 2)}`;
+    if (Object.keys(meta).length > 0 && meta.message !== message) {
+      // Remove duplicate message if present
+      const { message: msg, ...rest } = meta;
+      if (Object.keys(rest).length > 0) {
+        log += `\n${JSON.stringify(rest, null, 2)}`;
+      }
     }
     
     return log;
@@ -67,8 +69,11 @@ const consoleFormat = winston.format.combine(
       log += `\n${stack}`;
     }
     
-    if (Object.keys(meta).length > 0) {
-      log += `\n${JSON.stringify(meta, null, 2)}`;
+    if (Object.keys(meta).length > 0 && meta.message !== message) {
+      const { message: msg, ...rest } = meta;
+      if (Object.keys(rest).length > 0) {
+        log += `\n${JSON.stringify(rest, null, 2)}`;
+      }
     }
     
     return log;
@@ -94,6 +99,7 @@ const logger = winston.createLogger({
       level: 'error',
       maxsize: 5242880, // 5MB
       maxFiles: 5,
+      format: logFormat
     }),
     
     // Write all logs with level 'info' and below to combined.log
@@ -101,6 +107,7 @@ const logger = winston.createLogger({
       filename: path.join(logDir, 'combined.log'),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
+      format: logFormat
     }),
     
     // Write HTTP logs to http.log
@@ -109,6 +116,7 @@ const logger = winston.createLogger({
       level: 'http',
       maxsize: 5242880, // 5MB
       maxFiles: 5,
+      format: logFormat
     }),
     
     // Write debug logs to debug.log (only in development)
@@ -118,6 +126,7 @@ const logger = winston.createLogger({
         level: 'debug',
         maxsize: 5242880, // 5MB
         maxFiles: 5,
+        format: logFormat
       })
     ] : [])
   ],
@@ -127,6 +136,7 @@ const logger = winston.createLogger({
       filename: path.join(logDir, 'exceptions.log'),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
+      format: logFormat
     })
   ],
   rejectionHandlers: [
@@ -134,6 +144,7 @@ const logger = winston.createLogger({
       filename: path.join(logDir, 'rejections.log'),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
+      format: logFormat
     })
   ]
 });
@@ -173,13 +184,15 @@ logger.logRequest = (req, res, duration) => {
     url: req.originalUrl,
     status: res.statusCode,
     duration: `${duration}ms`,
-    ip: req.ip || req.connection.remoteAddress,
+    ip: req.ip || req.connection?.remoteAddress,
     userAgent: req.headers['user-agent'],
     referer: req.headers['referer'] || req.headers['referrer']
   };
 
-  if (res.statusCode >= 400) {
+  if (res.statusCode >= 500) {
     logger.error('API Request Error', logData);
+  } else if (res.statusCode >= 400) {
+    logger.warn('API Request Error', logData);
   } else if (res.statusCode >= 300) {
     logger.warn('API Request Redirect', logData);
   } else {
@@ -307,5 +320,7 @@ logger.logPerformance = (metric, value, unit = 'ms', meta = {}) => {
   logger.verbose('Performance Metric', logData);
 };
 
-// Export logger
+// Log startup
+logger.info(`🚀 Logger initialized in ${process.env.NODE_ENV || 'development'} mode`);
+
 module.exports = logger;

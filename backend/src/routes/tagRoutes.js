@@ -1,19 +1,38 @@
 const express = require('express');
 const router = express.Router();
 
-// Import controllers - make sure each one exists
+// Import controllers
 const tagController = require('../controllers/tagController');
 
-// Destructure with fallbacks to prevent undefined errors
+// Destructure with proper validation - NO FALLBACKS
 const {
-  getTags = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getTagBySlug = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  createTag = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  updateTag = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  deleteTag = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getTagBlogs = (req, res) => res.status(501).json({ message: 'Not implemented' }),
-  getPopularTags = (req, res) => res.status(501).json({ message: 'Not implemented' })
+  getTags,
+  getTagBySlug,
+  createTag,
+  updateTag,
+  deleteTag,
+  getTagBlogs,
+  getPopularTags
 } = tagController;
+
+// Validate that all required controllers exist
+const requiredControllers = [
+  'getTags',
+  'getTagBySlug',
+  'createTag', 
+  'updateTag',
+  'deleteTag',
+  'getTagBlogs',
+  'getPopularTags'
+];
+
+const missingControllers = requiredControllers.filter(name => !tagController[name]);
+if (missingControllers.length > 0) {
+  console.error('❌ Missing tag controllers:', missingControllers.join(', '));
+  if (process.env.NODE_ENV !== 'production') {
+    throw new Error(`Missing controllers: ${missingControllers.join(', ')}`);
+  }
+}
 
 const {
   tagValidation,
@@ -23,29 +42,55 @@ const {
 } = require('../middleware/validation');
 const { generalLimiter } = require('../middleware/rateLimiter');
 const { protect, isAdmin } = require('../middleware/auth');
+const { cacheMiddleware, invalidateCache } = require('../middleware/cache');
+const { logAdminActivity } = require('../middleware/adminAuth');
 
 // ============================================
 // Public Routes
 // ============================================
 router.use(generalLimiter);
 
-// Get all tags
-router.get('/', getTags);
+// Get all tags - Cache for 1 hour
+router.get('/', cacheMiddleware(3600), getTags);
 
-// Get popular tags
-router.get('/popular', getPopularTags);
+// Get popular tags - Cache for 2 hours
+router.get('/popular', cacheMiddleware(7200), getPopularTags);
 
-// Get tag by slug
-router.get('/:slug', slugValidation, getTagBySlug);
+// Get tag by slug - Cache for 1 hour
+router.get('/:slug', slugValidation, cacheMiddleware(3600), getTagBySlug);
 
-// Get blogs with tag
-router.get('/:slug/blogs', slugValidation, paginationValidation, getTagBlogs);
+// Get blogs with tag - Cache for 30 minutes
+router.get('/:slug/blogs', slugValidation, paginationValidation, cacheMiddleware(1800), getTagBlogs);
 
 // ============================================
 // Admin Routes
 // ============================================
-router.post('/', protect, isAdmin, tagValidation, createTag);
-router.put('/:id', protect, isAdmin, idValidation, tagValidation, updateTag);
-router.delete('/:id', protect, isAdmin, idValidation, deleteTag);
+router.post('/', 
+  protect, 
+  isAdmin, 
+  logAdminActivity('Create Tag'),
+  tagValidation, 
+  invalidateCache(['tags:*', 'tag:*']),
+  createTag
+);
+
+router.put('/:id', 
+  protect, 
+  isAdmin, 
+  logAdminActivity('Update Tag'),
+  idValidation, 
+  tagValidation, 
+  invalidateCache(['tags:*', 'tag:*']),
+  updateTag
+);
+
+router.delete('/:id', 
+  protect, 
+  isAdmin, 
+  logAdminActivity('Delete Tag'),
+  idValidation, 
+  invalidateCache(['tags:*', 'tag:*']),
+  deleteTag
+);
 
 module.exports = router;

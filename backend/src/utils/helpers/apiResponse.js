@@ -11,8 +11,9 @@ const sendApiResponse = (res, statusCode, success, message, data = null, errors 
   const response = {
     success,
     message,
-    ...(data && { data }),
-    ...(errors && { errors })
+    ...(data !== null && data !== undefined && { data }),
+    ...(errors !== null && errors !== undefined && { errors }),
+    timestamp: new Date().toISOString()
   };
 
   return res.status(statusCode).json(response);
@@ -136,6 +137,56 @@ const sendPaginated = (res, data, pagination, message = 'Data fetched successful
   });
 };
 
+/**
+ * Validation Error Response
+ * @param {Object} res - Express response object
+ * @param {Array} errors - Validation errors array
+ * @param {string} message - Error message
+ */
+const sendValidationError = (res, errors, message = 'Validation error') => {
+  const formattedErrors = errors.map(err => ({
+    field: err.param || err.path || err.field,
+    message: err.msg || err.message,
+    value: err.value
+  }));
+  
+  return sendApiResponse(res, 400, false, message, null, formattedErrors);
+};
+
+/**
+ * Bulk Operation Response
+ * @param {Object} res - Express response object
+ * @param {Object} results - Bulk operation results
+ * @param {string} message - Success message
+ */
+const sendBulkResponse = (res, results, message = 'Bulk operation completed') => {
+  return sendApiResponse(res, 200, true, message, {
+    total: results.total || 0,
+    successful: results.successful || 0,
+    failed: results.failed || 0,
+    errors: results.errors || [],
+    details: results.details || []
+  });
+};
+
+/**
+ * Async Response Wrapper
+ * @param {Function} fn - Async function to execute
+ * @param {Object} res - Express response object
+ * @param {string} successMessage - Success message
+ * @param {number} successStatus - Success status code
+ */
+const asyncResponse = async (fn, res, successMessage = 'Operation successful', successStatus = 200) => {
+  try {
+    const result = await fn();
+    return sendApiResponse(res, successStatus, true, successMessage, result);
+  } catch (error) {
+    const status = error.status || 500;
+    const message = error.message || 'Internal server error';
+    return sendApiResponse(res, status, false, message);
+  }
+};
+
 module.exports = {
   sendApiResponse,
   sendSuccess,
@@ -149,5 +200,8 @@ module.exports = {
   sendConflict,
   sendTooManyRequests,
   sendServerError,
-  sendPaginated
+  sendPaginated,
+  sendValidationError,
+  sendBulkResponse,
+  asyncResponse
 };
