@@ -20,10 +20,15 @@ const {
   notificationValidation,
   paginationValidation
 } = require('../middleware/validation');
-const { blogCreationLimiter } = require('../middleware/rateLimiter');
+const { blogCreationLimiter, authLimiter } = require('../middleware/rateLimiter');
 const { logAdminActivity } = require('../middleware/adminAuth');
+const { login } = require('../controllers/authController');
+const { loginValidation } = require('../middleware/validation');
 
-// All admin routes are protected
+// Public admin login route (supports /api/v1/admin/login)
+router.post('/login', authLimiter, loginValidation, login);
+
+// All other admin routes are protected
 router.use(protect);
 router.use(isAdmin);
 router.use(logAdminActivity('Admin Action'));

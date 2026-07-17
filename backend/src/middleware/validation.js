@@ -247,6 +247,21 @@ const categoryValidation = [
   validate
 ];
 
+// @desc    Validation rules for tag
+const tagValidation = [
+  body('name')
+    .notEmpty().withMessage('Tag name is required')
+    .isString().withMessage('Tag name must be a string')
+    .trim()
+    .isLength({ min: 2, max: 30 }).withMessage('Tag name must be between 2 and 30 characters'),
+  body('description')
+    .optional()
+    .isString().withMessage('Description must be a string')
+    .trim()
+    .isLength({ max: 200 }).withMessage('Description cannot exceed 200 characters'),
+  validate
+];
+
 // @desc    Validation rules for search
 const searchValidation = [
   query('q')
@@ -294,6 +309,7 @@ module.exports = {
   profileUpdateValidation,
   subscriberPreferencesValidation,
   categoryValidation,
+  tagValidation,
   searchValidation,
   analyticsValidation
 };

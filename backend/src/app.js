@@ -161,11 +161,18 @@ app.use(generalLimiter);
 // Static Files
 // =====================
 
-app.post('/api/webhooks/cloudinary', express.json(), (req, res) => {
-  console.log('Webhook received:', req.body);
-  // Process the notification
-  res.status(200).send('OK');
-});
+app.route('/api/webhooks/cloudinary')
+  .get((req, res) => {
+    res.status(200).json({
+      success: true,
+      message: 'Cloudinary webhook endpoint is active. Send a POST request to trigger it.'
+    });
+  })
+  .post(express.json(), (req, res) => {
+    console.log('Webhook received:', req.body);
+    // Process the notification
+    res.status(200).send('OK');
+  });
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/public', express.static(path.join(__dirname, '../public')));

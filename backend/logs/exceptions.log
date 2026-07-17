@@ -882,3 +882,140 @@ Require stack:
     }
   ]
 }
+2026-07-17 01:07:45 [ERROR]: uncaughtException: argument handler must be a function
+TypeError: argument handler must be a function
+    at Route.<computed> [as post] (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\route.js:228:15)
+    at Router.<computed> [as post] (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:448:19)
+    at Object.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\tagRoutes.js:47:8)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+TypeError: argument handler must be a function
+    at Route.<computed> [as post] (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\route.js:228:15)
+    at Router.<computed> [as post] (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:448:19)
+    at Object.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\routes\tagRoutes.js:47:8)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Module.require (node:internal/modules/cjs/loader:1463:12)
+{
+  "error": {},
+  "exception": true,
+  "date": "Fri Jul 17 2026 01:07:45 GMT+0530 (India Standard Time)",
+  "process": {
+    "pid": 11372,
+    "uid": null,
+    "gid": null,
+    "cwd": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend",
+    "execPath": "C:\\Program Files\\nodejs\\node.exe",
+    "version": "v22.20.0",
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\server.js"
+    ],
+    "memoryUsage": {
+      "rss": 113967104,
+      "heapTotal": 67416064,
+      "heapUsed": 48303224,
+      "external": 20662604,
+      "arrayBuffers": 18264997
+    }
+  },
+  "os": {
+    "loadavg": [
+      0,
+      0,
+      0
+    ],
+    "uptime": 6115.078
+  },
+  "trace": [
+    {
+      "column": 15,
+      "file": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\node_modules\\router\\lib\\route.js",
+      "function": "Route.<computed> [as post]",
+      "line": 228,
+      "method": "<computed> [as post]",
+      "native": false
+    },
+    {
+      "column": 19,
+      "file": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\node_modules\\router\\index.js",
+      "function": "Router.<computed> [as post]",
+      "line": 448,
+      "method": "<computed> [as post]",
+      "native": false
+    },
+    {
+      "column": 8,
+      "file": "C:\\GitHub\\Working-GitHub\\AnilBlogs\\backend\\src\\routes\\tagRoutes.js",
+      "function": null,
+      "line": 47,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module._compile",
+      "line": 1706,
+      "method": "_compile",
+      "native": false
+    },
+    {
+      "column": 10,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Object..js",
+      "line": 1839,
+      "method": ".js",
+      "native": false
+    },
+    {
+      "column": 32,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module.load",
+      "line": 1441,
+      "method": "load",
+      "native": false
+    },
+    {
+      "column": 12,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Function._load",
+      "line": 1263,
+      "method": "_load",
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "node:diagnostics_channel",
+      "function": "TracingChannel.traceSync",
+      "line": 322,
+      "method": "traceSync",
+      "native": false
+    },
+    {
+      "column": 24,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "wrapModuleLoad",
+      "line": 237,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 12,
+      "file": "node:internal/modules/cjs/loader",
+      "function": "Module.require",
+      "line": 1463,
+      "method": "require",
+      "native": false
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+2026-07-17 01:27:33 [ERROR]: Error: Not Found - /api/webhooks/cloudinary
+2026-07-17 01:27:33 [ERROR]: Stack: Error: Not Found - /api/webhooks/cloudinary
+    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
+    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
+    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+    at Function.handle (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:186:3)
+    at router (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:60:12)
+2026-07-17 01:27:33 [ERROR]: URL: /api/webhooks/cloudinary
+2026-07-17 01:27:33 [ERROR]: Method: GET
+2026-07-17 01:27:33 [ERROR]: IP: ::1
+2026-07-17 01:27:33 [ERROR]: Error: Not Found - /favicon.ico
+2026-07-17 01:27:33 [ERROR]: Stack: Error: Not Found - /favicon.ico
+    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
+    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
+    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+    at Function.handle (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:186:3)
+    at router (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:60:12)
+2026-07-17 01:27:33 [ERROR]: URL: /favicon.ico
+2026-07-17 01:27:33 [ERROR]: Method: GET
+2026-07-17 01:27:33 [ERROR]: IP: ::1
+2026-07-17 01:33:25 [ERROR]: ❌ Port 7800 is already in use. Please use a different port.
+2026-07-17 01:38:23 [ERROR]: Login error: next is not a function
+2026-07-17 01:38:23 [ERROR]: Error: next is not a function
+2026-07-17 01:38:23 [ERROR]: Stack: TypeError: next is not a function
+    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\User.js:102:5)
+    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
+    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
+    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:403:16)
+    at async maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:7)
+    at async UserSchema.methods.resetLoginAttempts (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\User.js:153:3)
+    at async login (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\authController.js:46:5)
+2026-07-17 01:38:23 [ERROR]: URL: /api/v1/admin/login
+2026-07-17 01:38:23 [ERROR]: Method: POST
+2026-07-17 01:38:23 [ERROR]: IP: ::1
+2026-07-17 01:41:02 [ERROR]: Error: Not Found - /api/v1/admin/profile
+2026-07-17 01:41:02 [ERROR]: Stack: Error: Not Found - /api/v1/admin/profile
+    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
+    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
+    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+2026-07-17 01:41:02 [ERROR]: URL: /api/v1/admin/profile
+2026-07-17 01:41:02 [ERROR]: Method: GET
+2026-07-17 01:41:02 [ERROR]: IP: ::1
+2026-07-17 08:55:34 [ERROR]: Error: Not Found - /api/v1/admin/categories
+2026-07-17 08:55:34 [ERROR]: Stack: Error: Not Found - /api/v1/admin/categories
+    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
+    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
+    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+2026-07-17 08:55:34 [ERROR]: URL: /api/v1/admin/categories
+2026-07-17 08:55:34 [ERROR]: Method: POST
+2026-07-17 08:55:34 [ERROR]: IP: ::1
+2026-07-17 08:56:09 [ERROR]: Error: Not Found - /api/v1/admin/tags
+2026-07-17 08:56:09 [ERROR]: Stack: Error: Not Found - /api/v1/admin/tags
+    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
+    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
+    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
+    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
+    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
+2026-07-17 08:56:09 [ERROR]: URL: /api/v1/admin/tags
+2026-07-17 08:56:09 [ERROR]: Method: POST
+2026-07-17 08:56:09 [ERROR]: IP: ::1
+2026-07-17 08:56:47 [ERROR]: Create blog error: next is not a function
+2026-07-17 08:56:47 [ERROR]: Error: next is not a function
+2026-07-17 08:56:47 [ERROR]: Stack: TypeError: next is not a function
+    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\Blog.js:188:3)
+    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
+    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
+    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:403:16)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:7)
+    at async Function.create (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:2763:5)
+    at async createBlog (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\blogController.js:204:18)
+2026-07-17 08:56:47 [ERROR]: URL: /api/v1/admin/blogs
+2026-07-17 08:56:47 [ERROR]: Method: POST
+2026-07-17 08:56:47 [ERROR]: IP: ::1
+2026-07-17 08:58:08 [ERROR]: Subscribe error: next is not a function
+2026-07-17 08:58:08 [ERROR]: Error: next is not a function
+2026-07-17 08:58:08 [ERROR]: Stack: TypeError: next is not a function
+    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\Subscriber.js:175:3)
+    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
+    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
+    at model.validate (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:2702:30)
+    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:399:18)
+    at maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:19)
+    at trace (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\tracing.js:25:14)
+    at model.save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:673:10)
+    at Function.create (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:2763:18)
+    at subscribe (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\subscriberController.js:58:35)
+2026-07-17 08:58:08 [ERROR]: URL: /api/v1/subscribers
+2026-07-17 08:58:08 [ERROR]: Method: POST
+2026-07-17 08:58:08 [ERROR]: IP: ::1
