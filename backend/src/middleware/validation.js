@@ -301,6 +301,21 @@ const analyticsValidation = [
   validate
 ];
 
+// @desc    Validation rules for blog ID parameter
+const blogIdValidation = [
+  param('blogId')
+    .isMongoId().withMessage('Invalid ID format'),
+  validate
+];
+
+// @desc    Validation rules for Cloudinary publicId parameter
+const publicIdValidation = [
+  param('publicId')
+    .notEmpty().withMessage('Public ID is required')
+    .isString().withMessage('Public ID must be a string'),
+  validate
+];
+
 module.exports = {
   validate,
   loginValidation,
@@ -310,6 +325,8 @@ module.exports = {
   subscribeValidation,
   changePasswordValidation,
   idValidation,
+  blogIdValidation,
+  publicIdValidation,
   paginationValidation,
   slugValidation,
   emailValidation,

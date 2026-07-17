@@ -25,24 +25,27 @@ const SubscriberSchema = new mongoose.Schema(
     deviceInfo: {
       device: {
         type: String,
-        required: true
+        default: 'Unknown'
       },
       browser: {
         type: String,
-        required: true
+        default: 'Unknown'
       },
       browserVersion: {
         type: String,
-        required: true
+        default: 'Unknown'
       },
       os: {
         type: String,
-        required: true
+        default: 'Unknown'
       },
-      osVersion: String,
+      osVersion: {
+        type: String,
+        default: 'Unknown'
+      },
       userAgent: {
         type: String,
-        required: true
+        default: 'Unknown'
       },
       screenResolution: String,
       language: String,
@@ -160,20 +163,29 @@ const SubscriberSchema = new mongoose.Schema(
   }
 );
 
+// ============================================
 // Indexes
+// ============================================
 SubscriberSchema.index({ email: 1 }, { unique: true, sparse: true });
 SubscriberSchema.index({ ipAddress: 1 });
 SubscriberSchema.index({ status: 1 });
 SubscriberSchema.index({ createdAt: -1 });
 SubscriberSchema.index({ 'location.country': 1 });
 
-// Ensure either email or ip is present
-SubscriberSchema.pre('validate', function (next) {
+// ============================================
+// FIXED: Pre-save middleware - Proper function syntax
+// ============================================
+// IMPORTANT: Use function declaration, NOT arrow function
+SubscriberSchema.pre('save', async function() {
+  // Check if both email and ipAddress are missing
   if (!this.email && !this.ipAddress) {
-    next(new Error('Either email or IP address is required'));
+    throw new Error('Either email or IP address is required');
   }
-  next();
 });
+
+// ============================================
+// Instance Methods
+// ============================================
 
 // Generate verification token
 SubscriberSchema.methods.generateVerificationToken = function () {
@@ -195,6 +207,10 @@ SubscriberSchema.methods.generateUnsubscribeToken = function () {
   return token;
 };
 
+// ============================================
+// Virtuals
+// ============================================
+
 // Virtual for full location
 SubscriberSchema.virtual('fullLocation').get(function () {
   if (!this.location) return null;
@@ -211,6 +227,10 @@ SubscriberSchema.virtual('engagementRate').get(function () {
   const interactions = this.emailOpenCount + this.emailClickCount;
   return (interactions / this.totalEmailsReceived) * 100;
 });
+
+// ============================================
+// Static Methods
+// ============================================
 
 // Static method to get active subscribers
 SubscriberSchema.statics.getActive = async function () {

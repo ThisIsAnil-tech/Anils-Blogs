@@ -15,7 +15,7 @@ const {
   validateFileSize
 } = require('../middleware/upload');
 const { protect, isAdmin } = require('../middleware/auth');
-const { idValidation } = require('../middleware/validation');
+const { publicIdValidation } = require('../middleware/validation');
 const { uploadLimiter } = require('../middleware/rateLimiter');
 
 // All media routes are protected (Admin only)
@@ -27,9 +27,9 @@ router.use(uploadLimiter);
 router.post(
   '/image',
   uploadSingleImage,
-  validateFileType(['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg']),
-  validateFileSize(10),
-  handleUploadError,
+  (req, res, next) => validateFileType(['jpeg', 'jpg', 'png', 'gif', 'webp', 'svg'])(req, res, next),
+  (req, res, next) => validateFileSize(10)(req, res, next),
+  (req, res, next) => handleUploadError(null, req, res, next),
   uploadImageFile
 );
 
@@ -37,9 +37,9 @@ router.post(
 router.post(
   '/images',
   uploadMultiple,
-  validateFileType(['jpeg', 'jpg', 'png', 'gif', 'webp']),
-  validateFileSize(10),
-  handleUploadError,
+  (req, res, next) => validateFileType(['jpeg', 'jpg', 'png', 'gif', 'webp'])(req, res, next),
+  (req, res, next) => validateFileSize(10)(req, res, next),
+  (req, res, next) => handleUploadError(null, req, res, next),
   uploadMultipleImages
 );
 
@@ -47,13 +47,13 @@ router.post(
 router.post(
   '/video',
   uploadVideo,
-  validateFileType(['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm']),
-  validateFileSize(50),
-  handleUploadError,
+  (req, res, next) => validateFileType(['mp4', 'mov', 'avi', 'wmv', 'flv', 'mkv', 'webm'])(req, res, next),
+  (req, res, next) => validateFileSize(50)(req, res, next),
+  (req, res, next) => handleUploadError(null, req, res, next),
   uploadVideoFile
 );
 
 // Delete media
-router.delete('/:publicId', idValidation, deleteMediaFile);
+router.delete('/:publicId', publicIdValidation, deleteMediaFile);
 
 module.exports = router;

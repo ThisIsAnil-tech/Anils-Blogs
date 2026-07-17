@@ -67,7 +67,7 @@ const searchBlogs = async (req, res, next) => {
     let sortOption = { publishDate: -1 };
     switch (sort) {
       case 'relevance':
-        sortOption = { $text: { $score: { $meta: 'textScore' } } };
+        sortOption = { publishDate: -1 };
         break;
       case 'date':
         sortOption = { publishDate: -1 };
@@ -227,7 +227,7 @@ const searchSuggestions = async (req, res, next) => {
 // @access  Public
 const advancedSearch = async (req, res, next) => {
   try {
-    const { query, filters, sort, page = 1, limit = 12 } = req.body;
+    const { query, filters, sort, page = 1, limit = 12 } = req.body || {};
 
     const { skip, limit: limitNum } = getPagination(page, limit);
 
@@ -291,7 +291,7 @@ const advancedSearch = async (req, res, next) => {
     if (sort) {
       switch (sort.field) {
         case 'relevance':
-          sortOption = { $text: { $score: { $meta: 'textScore' } } };
+          sortOption = { publishDate: -1 };
           break;
         case 'title':
           sortOption = { title: sort.order === 'asc' ? 1 : -1 };

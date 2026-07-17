@@ -13,20 +13,35 @@ const subscribe = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return sendApiResponse(res, 400, false, 'Validation error', errors.array());
+      return sendApiResponse(res, 400, false, 'Validation error', null, errors.array());
     }
 
     const { username, email, preferences } = req.body;
 
     // Get IP and device info
-    const ip = req.ip || req.connection.remoteAddress;
+    const ip = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'] || '0.0.0.0';
     const userAgent = req.headers['user-agent'] || 'Unknown';
-    const deviceInfo = parseUserAgent(userAgent);
+    
+    // Parse device info with fallback
+    let deviceInfo;
+    try {
+      deviceInfo = parseUserAgent(userAgent);
+    } catch (error) {
+      logger.error(`Device info parsing error: ${error.message}`);
+      deviceInfo = {
+        device: 'Unknown',
+        browser: 'Unknown',
+        browserVersion: 'Unknown',
+        os: 'Unknown',
+        osVersion: 'Unknown',
+        userAgent: userAgent || 'Unknown'
+      };
+    }
 
     // Check if subscriber already exists
     let subscriber = await Subscriber.findOne({ 
       $or: [
-        { email: email.toLowerCase() },
+        { email: email ? email.toLowerCase() : undefined },
         { ipAddress: ip }
       ]
     });
@@ -54,18 +69,27 @@ const subscribe = async (req, res, next) => {
       return sendApiResponse(res, 400, false, 'Already subscribed');
     }
 
-    // Create new subscriber
-    subscriber = await Subscriber.create({
+    // Create new subscriber with proper device info
+    const subscriberData = {
       username,
       email: email ? email.toLowerCase() : undefined,
       ipAddress: ip,
-      deviceInfo,
-      preferences,
-      status: email ? 'active' : 'active',
+      deviceInfo: deviceInfo,
+      preferences: preferences || {},
+      status: 'active',
       isVerified: email ? false : true,
       verificationToken: email ? generateToken() : undefined,
       subscriptionDate: Date.now()
+    };
+
+    logger.debug('Creating subscriber with data:', { 
+      username, 
+      email, 
+      ip, 
+      deviceInfo: JSON.stringify(deviceInfo) 
     });
+
+    subscriber = await Subscriber.create(subscriberData);
 
     // Send welcome email if email provided
     if (email) {
@@ -82,6 +106,7 @@ const subscribe = async (req, res, next) => {
     });
   } catch (error) {
     logger.error(`Subscribe error: ${error.message}`);
+    logger.error(`Stack: ${error.stack}`);
     next(error);
   }
 };
@@ -250,7 +275,6 @@ const getSubscriberStats = async (req, res, next) => {
   try {
     const stats = await Subscriber.getStats();
     
-    // Get recent growth (last 7 days)
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
     
@@ -268,44 +292,80 @@ const getSubscriberStats = async (req, res, next) => {
   }
 };
 
-// Helper: Parse user agent
+// Helper: Parse user agent with proper error handling
 function parseUserAgent(userAgent) {
-  const info = {
-    device: 'Unknown',
-    browser: 'Unknown',
-    browserVersion: 'Unknown',
-    os: 'Unknown',
-    osVersion: 'Unknown'
-  };
+  try {
+    const info = {
+      device: 'Unknown',
+      browser: 'Unknown',
+      browserVersion: 'Unknown',
+      os: 'Unknown',
+      osVersion: 'Unknown',
+      userAgent: userAgent || 'Unknown'
+    };
 
-  // Simple parsing
-  if (userAgent.includes('Mobile')) info.device = 'Mobile';
-  else if (userAgent.includes('Tablet')) info.device = 'Tablet';
-  else info.device = 'Desktop';
+    if (!userAgent || userAgent === 'Unknown') {
+      return info;
+    }
 
-  if (userAgent.includes('Chrome')) {
-    info.browser = 'Chrome';
-    const match = userAgent.match(/Chrome\/(\d+\.\d+)/);
-    if (match) info.browserVersion = match[1];
-  } else if (userAgent.includes('Firefox')) {
-    info.browser = 'Firefox';
-    const match = userAgent.match(/Firefox\/(\d+\.\d+)/);
-    if (match) info.browserVersion = match[1];
-  } else if (userAgent.includes('Safari')) {
-    info.browser = 'Safari';
-  } else if (userAgent.includes('Edge')) {
-    info.browser = 'Edge';
+    // Simple parsing
+    const ua = userAgent.toLowerCase();
+
+    // Detect device
+    if (ua.includes('mobile')) info.device = 'Mobile';
+    else if (ua.includes('tablet')) info.device = 'Tablet';
+    else info.device = 'Desktop';
+
+    // Detect browser
+    if (ua.includes('chrome') && !ua.includes('edg')) {
+      info.browser = 'Chrome';
+      const match = userAgent.match(/Chrome\/(\d+\.\d+)/);
+      if (match) info.browserVersion = match[1];
+    } else if (ua.includes('firefox')) {
+      info.browser = 'Firefox';
+      const match = userAgent.match(/Firefox\/(\d+\.\d+)/);
+      if (match) info.browserVersion = match[1];
+    } else if (ua.includes('safari') && !ua.includes('chrome')) {
+      info.browser = 'Safari';
+    } else if (ua.includes('edg')) {
+      info.browser = 'Edge';
+    } else if (ua.includes('opera') || ua.includes('opr')) {
+      info.browser = 'Opera';
+    }
+
+    // Detect OS
+    if (ua.includes('windows')) {
+      info.os = 'Windows';
+      const match = userAgent.match(/Windows NT (\d+\.\d+)/);
+      if (match) info.osVersion = match[1];
+    } else if (ua.includes('mac os')) {
+      info.os = 'MacOS';
+      const match = userAgent.match(/Mac OS X (\d+[._]\d+)/);
+      if (match) info.osVersion = match[1].replace('_', '.');
+    } else if (ua.includes('linux') && !ua.includes('android')) {
+      info.os = 'Linux';
+    } else if (ua.includes('android')) {
+      info.os = 'Android';
+      const match = userAgent.match(/Android (\d+\.\d+)/);
+      if (match) info.osVersion = match[1];
+    } else if (ua.includes('ios') || ua.includes('iphone') || ua.includes('ipad')) {
+      info.os = 'iOS';
+      const match = userAgent.match(/OS (\d+[._]\d+)/);
+      if (match) info.osVersion = match[1].replace('_', '.');
+    }
+
+    return info;
+  } catch (error) {
+    logger.error(`Parse user agent error: ${error.message}`);
+    return {
+      device: 'Unknown',
+      browser: 'Unknown',
+      browserVersion: 'Unknown',
+      os: 'Unknown',
+      osVersion: 'Unknown',
+      userAgent: userAgent || 'Unknown'
+    };
   }
-
-  if (userAgent.includes('Windows')) info.os = 'Windows';
-  else if (userAgent.includes('Mac')) info.os = 'MacOS';
-  else if (userAgent.includes('Linux')) info.os = 'Linux';
-  else if (userAgent.includes('Android')) info.os = 'Android';
-  else if (userAgent.includes('iOS') || userAgent.includes('iPhone') || userAgent.includes('iPad')) {
-    info.os = 'iOS';
-  }
-
-  return info;
 }
 
 // Helper: Generate token

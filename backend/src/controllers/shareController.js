@@ -9,7 +9,7 @@ const logger = require('../utils/logger');
 const shareBlog = async (req, res, next) => {
   try {
     const { blogId } = req.params;
-    const { platform = 'direct' } = req.body;
+    const { platform = 'direct' } = req.body || {};
     const ip = req.ip || req.connection.remoteAddress;
     const userAgent = req.headers['user-agent'] || 'Unknown';
 

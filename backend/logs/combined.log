@@ -1,372 +1,54 @@
-2026-07-17 01:15:54 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:15:54 [WARN]: Swagger documentation not available
-2026-07-17 01:15:54 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:15:54 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:15:54 [INFO]: Redis initialization complete
-2026-07-17 01:15:55 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
-2026-07-17 01:15:55 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:15:55 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:15:55 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:15:56 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:15:56 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:15:56 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:15:56 [INFO]: ========================================
-2026-07-17 01:15:56 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:15:56 [INFO]: 🌍 Environment: development
-2026-07-17 01:15:56 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:15:56 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:15:56 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:15:56 [INFO]: ========================================
-2026-07-17 01:15:56 [INFO]: 📋 Registered Routes:
-2026-07-17 01:15:56 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:24:43 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:24:43 [WARN]: Swagger documentation not available
-2026-07-17 01:24:43 [INFO]: Redis initialization complete
-2026-07-17 01:25:50 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:25:50 [WARN]: Swagger documentation not available
-2026-07-17 01:25:50 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:25:50 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:25:50 [INFO]: Redis initialization complete
-2026-07-17 01:25:51 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
-2026-07-17 01:25:51 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:25:51 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:25:51 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:25:52 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:25:52 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:25:52 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:25:52 [INFO]: ========================================
-2026-07-17 01:25:52 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:25:52 [INFO]: 🌍 Environment: development
-2026-07-17 01:25:52 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:25:52 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:25:52 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:25:52 [INFO]: ========================================
-2026-07-17 01:25:52 [INFO]: 📋 Registered Routes:
-2026-07-17 01:25:52 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:27:33 [ERROR]: Error: Not Found - /api/webhooks/cloudinary
-2026-07-17 01:27:33 [ERROR]: Stack: Error: Not Found - /api/webhooks/cloudinary
-    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
-    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
-    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
-    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-    at Function.handle (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:186:3)
-    at router (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:60:12)
-2026-07-17 01:27:33 [ERROR]: URL: /api/webhooks/cloudinary
-2026-07-17 01:27:33 [ERROR]: Method: GET
-2026-07-17 01:27:33 [ERROR]: IP: ::1
-2026-07-17 01:27:33 [INFO]: GET /api/webhooks/cloudinary - 404 - 33ms
-2026-07-17 01:27:33 [ERROR]: Error: Not Found - /favicon.ico
-2026-07-17 01:27:33 [ERROR]: Stack: Error: Not Found - /favicon.ico
-    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
-    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
-    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
-    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-    at Function.handle (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:186:3)
-    at router (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:60:12)
-2026-07-17 01:27:33 [ERROR]: URL: /favicon.ico
-2026-07-17 01:27:33 [ERROR]: Method: GET
-2026-07-17 01:27:33 [ERROR]: IP: ::1
-2026-07-17 01:27:33 [INFO]: GET /favicon.ico - 404 - 11ms
-2026-07-17 01:28:21 [INFO]: Received shutdown signal. Closing server gracefully...
-2026-07-17 01:28:36 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:28:36 [WARN]: Swagger documentation not available
-2026-07-17 01:28:36 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:28:36 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:28:36 [INFO]: Redis initialization complete
-2026-07-17 01:28:37 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
-2026-07-17 01:28:37 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:28:37 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:28:37 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:28:38 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:28:38 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:28:38 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:28:38 [INFO]: ========================================
-2026-07-17 01:28:38 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:28:38 [INFO]: 🌍 Environment: development
-2026-07-17 01:28:38 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:28:38 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:28:38 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:28:38 [INFO]: ========================================
-2026-07-17 01:28:38 [INFO]: 📋 Registered Routes:
-2026-07-17 01:28:38 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:28:42 [INFO]: GET /api/webhooks/cloudinary - 200 - 17ms
-2026-07-17 01:30:20 [INFO]: POST /api/v1/admin/login - 401 - 33ms
-2026-07-17 01:31:24 [INFO]: POST /api/v1/admin/login - 401 - 9ms
-2026-07-17 01:31:25 [INFO]: POST /api/v1/admin/login - 401 - 2ms
-2026-07-17 01:33:10 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:33:10 [WARN]: Swagger documentation not available
-2026-07-17 01:33:10 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:33:10 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:33:10 [INFO]: Redis initialization complete
-2026-07-17 01:33:12 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-01.hn8yafj.mongodb.net
-2026-07-17 01:33:12 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:33:12 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:33:12 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:33:12 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:33:14 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:33:14 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:33:14 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:33:14 [INFO]: ========================================
-2026-07-17 01:33:14 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:33:14 [INFO]: 🌍 Environment: development
-2026-07-17 01:33:14 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:33:14 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:33:14 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:33:14 [INFO]: ========================================
-2026-07-17 01:33:14 [INFO]: 📋 Registered Routes:
-2026-07-17 01:33:14 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:33:20 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:33:20 [WARN]: Swagger documentation not available
-2026-07-17 01:33:20 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:33:20 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:33:20 [INFO]: Redis initialization complete
-2026-07-17 01:33:20 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
-2026-07-17 01:33:21 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:33:21 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:33:21 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:33:21 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:33:25 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:33:31 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:33:32 [WARN]: Swagger documentation not available
-2026-07-17 01:33:32 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:33:32 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:33:32 [INFO]: Redis initialization complete
-2026-07-17 01:33:33 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-01.hn8yafj.mongodb.net
-2026-07-17 01:33:33 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:33:33 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:33:33 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:33:33 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:33:38 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:33:38 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:33:38 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:33:38 [INFO]: ========================================
-2026-07-17 01:33:38 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:33:38 [INFO]: 🌍 Environment: development
-2026-07-17 01:33:38 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:33:38 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:33:38 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:33:38 [INFO]: ========================================
-2026-07-17 01:33:38 [INFO]: 📋 Registered Routes:
-2026-07-17 01:33:38 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:33:42 [INFO]: Received shutdown signal. Closing server gracefully...
-2026-07-17 01:35:02 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:35:02 [WARN]: Swagger documentation not available
-2026-07-17 01:35:02 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:35:02 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:35:02 [INFO]: Redis initialization complete
-2026-07-17 01:35:02 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
-2026-07-17 01:35:03 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:35:03 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:35:03 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:35:03 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:35:05 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:35:05 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:35:05 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:35:05 [INFO]: ========================================
-2026-07-17 01:35:05 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:35:05 [INFO]: 🌍 Environment: development
-2026-07-17 01:35:05 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:35:05 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:35:05 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:35:05 [INFO]: ========================================
-2026-07-17 01:35:05 [INFO]: 📋 Registered Routes:
-2026-07-17 01:35:05 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:35:13 [INFO]: POST /api/v1/admin/login - 401 - 37ms
-2026-07-17 01:35:15 [INFO]: POST /api/v1/admin/login - 401 - 12ms
-2026-07-17 01:35:27 [INFO]: POST /api/v1/admin/login - 401 - 1ms
-2026-07-17 01:35:48 [INFO]: POST /api/v1/admin/login - 401 - 1ms
-2026-07-17 01:35:57 [INFO]: Received shutdown signal. Closing server gracefully...
-2026-07-17 01:38:16 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:38:16 [WARN]: Swagger documentation not available
-2026-07-17 01:38:16 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:38:16 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:38:16 [INFO]: Redis initialization complete
-2026-07-17 01:38:17 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-02.hn8yafj.mongodb.net
-2026-07-17 01:38:17 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:38:17 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:38:17 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:38:17 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:38:19 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:38:19 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:38:19 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:38:19 [INFO]: ========================================
-2026-07-17 01:38:19 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:38:19 [INFO]: 🌍 Environment: development
-2026-07-17 01:38:19 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:38:19 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:38:19 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:38:19 [INFO]: ========================================
-2026-07-17 01:38:19 [INFO]: 📋 Registered Routes:
-2026-07-17 01:38:19 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:38:23 [ERROR]: Login error: next is not a function
-2026-07-17 01:38:23 [ERROR]: Error: next is not a function
-2026-07-17 01:38:23 [ERROR]: Stack: TypeError: next is not a function
-    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\User.js:102:5)
-    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
-    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
-    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:403:16)
-    at async maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:7)
-    at async UserSchema.methods.resetLoginAttempts (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\User.js:153:3)
-    at async login (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\authController.js:46:5)
-2026-07-17 01:38:23 [ERROR]: URL: /api/v1/admin/login
-2026-07-17 01:38:23 [ERROR]: Method: POST
-2026-07-17 01:38:23 [ERROR]: IP: ::1
-2026-07-17 01:38:23 [INFO]: POST /api/v1/admin/login - 500 - 154ms
-2026-07-17 01:38:51 [INFO]: Received shutdown signal. Closing server gracefully...
-2026-07-17 01:39:53 [INFO]: Redis is disabled in environment variables
-2026-07-17 01:39:53 [WARN]: Swagger documentation not available
-2026-07-17 01:39:53 [INFO]: 🚀 Starting server initialization...
-2026-07-17 01:39:53 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 01:39:53 [INFO]: Redis initialization complete
-2026-07-17 01:39:53 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-01.hn8yafj.mongodb.net
-2026-07-17 01:39:54 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 01:39:54 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 01:39:54 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 01:39:54 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 01:39:55 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:39:55 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 01:39:55 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 01:39:55 [INFO]: ========================================
-2026-07-17 01:39:55 [INFO]: ✅ Server is running on port 7800
-2026-07-17 01:39:55 [INFO]: 🌍 Environment: development
-2026-07-17 01:39:55 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 01:39:55 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 01:39:55 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 01:39:55 [INFO]: ========================================
-2026-07-17 01:39:55 [INFO]: 📋 Registered Routes:
-2026-07-17 01:39:55 [INFO]: ✅ Server listening on port 7800
-2026-07-17 01:40:00 [INFO]: POST /api/v1/admin/login - 200 - 279ms
-2026-07-17 01:41:02 [INFO]: Admin Activity: admin - Admin Action - GET /api/v1/admin/profile
-2026-07-17 01:41:02 [ERROR]: Error: Not Found - /api/v1/admin/profile
-2026-07-17 01:41:02 [ERROR]: Stack: Error: Not Found - /api/v1/admin/profile
-    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
-    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
-    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
-    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-2026-07-17 01:41:02 [ERROR]: URL: /api/v1/admin/profile
-2026-07-17 01:41:02 [ERROR]: Method: GET
-2026-07-17 01:41:02 [ERROR]: IP: ::1
-2026-07-17 01:41:02 [INFO]: GET /api/v1/admin/profile - 404 - 83ms
-2026-07-17 01:41:45 [INFO]: GET /api/v1/blogs?page=1&limit=12 - 200 - 95ms
-2026-07-17 01:41:52 [INFO]: GET /api/v1/blogs?page=1&limit=12 - 200 - 99ms
-2026-07-17 01:41:58 [INFO]: GET /api/v1/blogs?page=1&limit=12 - 200 - 470ms
-2026-07-17 01:42:50 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 01:42:50 [INFO]: POST /api/v1/admin/blogs - 400 - 57ms
-2026-07-17 01:43:08 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 01:43:08 [INFO]: POST /api/v1/admin/blogs - 400 - 69ms
-2026-07-17 01:43:45 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 01:43:45 [INFO]: POST /api/v1/admin/blogs - 400 - 50ms
-2026-07-17 01:43:54 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 01:43:54 [INFO]: POST /api/v1/admin/blogs - 400 - 54ms
-2026-07-17 01:43:56 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 01:43:56 [INFO]: POST /api/v1/admin/blogs - 400 - 68ms
-2026-07-17 01:46:40 [INFO]: Received shutdown signal. Closing server gracefully...
-2026-07-17 08:52:41 [INFO]: Redis is disabled in environment variables
-2026-07-17 08:52:41 [WARN]: Swagger documentation not available
-2026-07-17 08:52:41 [INFO]: 🚀 Starting server initialization...
-2026-07-17 08:52:41 [INFO]: 📡 Connecting to MongoDB...
-2026-07-17 08:52:41 [INFO]: Redis initialization complete
-2026-07-17 08:52:43 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-02.hn8yafj.mongodb.net
-2026-07-17 08:52:44 [INFO]: ℹ️ Admin user already exists. Skipping seeding.
-2026-07-17 08:52:44 [INFO]: ✅ MongoDB connected successfully
-2026-07-17 08:52:44 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
-2026-07-17 08:52:44 [INFO]: 📡 Connecting to MEGA.nz...
-2026-07-17 08:52:50 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 08:52:50 [INFO]: ✅ MEGA.nz connected successfully
-2026-07-17 08:52:50 [INFO]: 📡 Starting server on port 7800...
-2026-07-17 08:52:50 [INFO]: ========================================
-2026-07-17 08:52:50 [INFO]: ✅ Server is running on port 7800
-2026-07-17 08:52:50 [INFO]: 🌍 Environment: development
-2026-07-17 08:52:50 [INFO]: 🔗 URL: http://localhost:7800
-2026-07-17 08:52:50 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
-2026-07-17 08:52:50 [INFO]: 💚 Health Check: http://localhost:7800/health
-2026-07-17 08:52:50 [INFO]: ========================================
-2026-07-17 08:52:50 [INFO]: 📋 Registered Routes:
-2026-07-17 08:52:50 [INFO]: ✅ Server listening on port 7800
-2026-07-17 08:54:27 [INFO]: POST /api/v1/admin/login - 200 - 463ms
-2026-07-17 08:55:34 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/categories
-2026-07-17 08:55:34 [ERROR]: Error: Not Found - /api/v1/admin/categories
-2026-07-17 08:55:34 [ERROR]: Stack: Error: Not Found - /api/v1/admin/categories
-    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
-    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
-    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
-    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-2026-07-17 08:55:34 [ERROR]: URL: /api/v1/admin/categories
-2026-07-17 08:55:34 [ERROR]: Method: POST
-2026-07-17 08:55:34 [ERROR]: IP: ::1
-2026-07-17 08:55:34 [INFO]: POST /api/v1/admin/categories - 404 - 139ms
-2026-07-17 08:56:09 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/tags
-2026-07-17 08:56:09 [ERROR]: Error: Not Found - /api/v1/admin/tags
-2026-07-17 08:56:09 [ERROR]: Stack: Error: Not Found - /api/v1/admin/tags
-    at notFound (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\middleware\errorHandler.js:6:17)
-    at Layer.handleRequest (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\lib\layer.js:152:17)
-    at trimPrefix (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:342:13)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:297:9
-    at processParams (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:582:12)
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:291:5)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-    at C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:688:15
-    at next (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\router\index.js:276:14)
-2026-07-17 08:56:09 [ERROR]: URL: /api/v1/admin/tags
-2026-07-17 08:56:09 [ERROR]: Method: POST
-2026-07-17 08:56:09 [ERROR]: IP: ::1
-2026-07-17 08:56:09 [INFO]: POST /api/v1/admin/tags - 404 - 149ms
-2026-07-17 08:56:45 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
-2026-07-17 08:56:47 [INFO]: 📄 MEGA file uploaded: blog_1784258805105_Getting_Started_with_Node_js_and_Express.txt
-2026-07-17 08:56:47 [ERROR]: Create blog error: next is not a function
-2026-07-17 08:56:47 [ERROR]: Error: next is not a function
-2026-07-17 08:56:47 [ERROR]: Stack: TypeError: next is not a function
-    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\Blog.js:188:3)
-    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
-    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
-    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:403:16)
-    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
-    at async maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:7)
-    at async Function.create (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:2763:5)
-    at async createBlog (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\blogController.js:204:18)
-2026-07-17 08:56:47 [ERROR]: URL: /api/v1/admin/blogs
-2026-07-17 08:56:47 [ERROR]: Method: POST
-2026-07-17 08:56:47 [ERROR]: IP: ::1
-2026-07-17 08:56:47 [INFO]: POST /api/v1/admin/blogs - 500 - 2928ms
-2026-07-17 08:57:09 [INFO]: GET /api/v1/blogs?page=1&limit=12 - 200 - 488ms
-2026-07-17 08:57:29 [INFO]: GET /api/v1/blogs/getting-started-with-nodejs-and-express - 404 - 376ms
-2026-07-17 08:58:08 [ERROR]: Subscribe error: next is not a function
-2026-07-17 08:58:08 [ERROR]: Error: next is not a function
-2026-07-17 08:58:08 [ERROR]: Stack: TypeError: next is not a function
-    at model.<anonymous> (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\models\Subscriber.js:175:3)
-    at Kareem.execPre (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\kareem\index.js:59:39)
-    at model._execDocumentPreHooks (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:3210:29)
-    at model.validate (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\document.js:2702:30)
-    at model.$__save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:399:18)
-    at maybeTracedSave (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:675:19)
-    at trace (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\tracing.js:25:14)
-    at model.save (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:673:10)
-    at Function.create (C:\GitHub\Working-GitHub\AnilBlogs\backend\node_modules\mongoose\lib\model.js:2763:18)
-    at subscribe (C:\GitHub\Working-GitHub\AnilBlogs\backend\src\controllers\subscriberController.js:58:35)
-2026-07-17 08:58:08 [ERROR]: URL: /api/v1/subscribers
-2026-07-17 08:58:08 [ERROR]: Method: POST
-2026-07-17 08:58:08 [ERROR]: IP: ::1
-2026-07-17 08:58:08 [INFO]: POST /api/v1/subscribers - 500 - 357ms
-2026-07-17 08:58:29 [INFO]: GET /api/v1/dashboard - 200 - 1958ms
-2026-07-17 08:59:03 [INFO]: Received shutdown signal. Closing server gracefully...
+2026-07-17 10:43:54 [INFO]: 🚀 Logger initialized in development mode
+2026-07-17 10:43:56 [INFO]: ✅ Email service initialized
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/auth
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/blogs
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/admin
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/comments
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/subscribers
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/likes
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/shares
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/media
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/dashboard
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/categories
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/tags
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/search
+2026-07-17 10:43:56 [DEBUG]: ✅ Route registered: /api/v1/settings
+2026-07-17 10:43:56 [INFO]: ℹ️  Redis is disabled in environment variables
+2026-07-17 10:43:56 [WARN]: Swagger documentation not available
+2026-07-17 10:43:56 [INFO]: 🚀 Starting server initialization...
+2026-07-17 10:43:56 [INFO]: 📡 Connecting to MongoDB...
+2026-07-17 10:43:56 [INFO]: 📡 Connecting to MongoDB...
+2026-07-17 10:43:56 [INFO]: ℹ️  Redis not enabled
+2026-07-17 10:43:59 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-00.hn8yafj.mongodb.net
+2026-07-17 10:43:59 [INFO]:    Database: personal_blog_db
+2026-07-17 10:43:59 [INFO]:    Connection Pool Size: default
+2026-07-17 10:43:59 [INFO]: ℹ️  Admin user already exists. Skipping seeding.
+2026-07-17 10:43:59 [INFO]: ✅ MongoDB connected successfully
+2026-07-17 10:43:59 [INFO]: ℹ️ Redis is disabled. Skipping Redis connection...
+2026-07-17 10:43:59 [INFO]: 📡 Connecting to MEGA.nz...
+2026-07-17 10:43:59 [INFO]: 📡 Connecting to MEGA.nz... (attempt 1)
+2026-07-17 10:44:01 [INFO]: ✅ MEGA.nz connected successfully
+2026-07-17 10:44:01 [INFO]: ✅ MEGA folder ready: blogs (GKwXxCYS)
+2026-07-17 10:44:01 [INFO]: ✅ MEGA.nz connected successfully
+2026-07-17 10:44:01 [INFO]: 📡 Starting server on port 7800...
+2026-07-17 10:44:01 [INFO]: ========================================
+2026-07-17 10:44:01 [INFO]: ✅ Server is running on port 7800
+2026-07-17 10:44:01 [INFO]: 🌍 Environment: development
+2026-07-17 10:44:01 [INFO]: 🔗 URL: http://localhost:7800
+2026-07-17 10:44:01 [INFO]: 📚 API Docs: http://localhost:7800/api-docs
+2026-07-17 10:44:01 [INFO]: 💚 Health Check: http://localhost:7800/health
+2026-07-17 10:44:01 [INFO]: ========================================
+2026-07-17 10:44:01 [INFO]: 📋 Registered Routes:
+2026-07-17 10:44:01 [INFO]: ✅ Server listening on port 7800
+2026-07-17 10:44:17 [DEBUG]: Creating subscriber with data:
+{
+  "username": "Test User",
+  "email": "test@example.com",
+  "ip": "::1",
+  "deviceInfo": "{\"device\":\"Desktop\",\"browser\":\"Unknown\",\"browserVersion\":\"Unknown\",\"os\":\"Unknown\",\"osVersion\":\"Unknown\",\"userAgent\":\"PostmanRuntime/7.54.0\"}"
+}
+2026-07-17 10:44:17 [INFO]: 📧 Sending email to test@example.com
+2026-07-17 10:44:19 [ERROR]: ❌ Email sending error: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+2026-07-17 10:44:19 [ERROR]: Welcome email error: Failed to send email: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+2026-07-17 10:44:19 [INFO]: POST /api/v1/subscribers - 201 - 1999ms
+2026-07-17 10:44:39 [INFO]: ⚠️ Received SIGINT. Closing server gracefully...

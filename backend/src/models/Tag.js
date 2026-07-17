@@ -47,7 +47,7 @@ const TagSchema = new mongoose.Schema(
 );
 
 // Create slug before saving
-TagSchema.pre('save', function (next) {
+TagSchema.pre('save', async function () {
   if (this.isModified('name') || this.isNew) {
     this.slug = slugify(this.name, {
       lower: true,
@@ -55,7 +55,6 @@ TagSchema.pre('save', function (next) {
       trim: true
     });
   }
-  next();
 });
 
 // Indexes

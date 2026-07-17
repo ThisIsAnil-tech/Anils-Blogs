@@ -203,8 +203,10 @@ router.get('/api-docs', (req, res) => {
   });
 });
 
-// 404 handler for routes
-router.use('*', (req, res) => {
+// ... (all your route imports and registrations)
+
+// 404 handler for routes - FIXED
+router.use('/*splat', (req, res) => {
   res.status(404).json({
     success: false,
     message: `Route ${req.originalUrl} not found`,

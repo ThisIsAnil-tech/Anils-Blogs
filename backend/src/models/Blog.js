@@ -175,7 +175,7 @@ const BlogSchema = new mongoose.Schema(
 );
 
 // Create slug before saving
-BlogSchema.pre('save', function (next) {
+BlogSchema.pre('save', async function () {
   if (this.isModified('title') || this.isNew) {
     this.slug = slugify(this.title, {
       lower: true,
@@ -185,7 +185,6 @@ BlogSchema.pre('save', function (next) {
     });
   }
   this.updatedAt = Date.now();
-  next();
 });
 
 // Indexes for better performance

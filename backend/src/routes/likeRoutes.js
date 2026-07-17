@@ -5,7 +5,7 @@ const {
   checkLikeStatus,
   getLikeCount
 } = require('../controllers/likeController');
-const { idValidation } = require('../middleware/validation');
+const { blogIdValidation } = require('../middleware/validation');
 const { generalLimiter } = require('../middleware/rateLimiter');
 const { trackIP } = require('../middleware/ipTracker');
 
@@ -14,12 +14,12 @@ router.use(generalLimiter);
 router.use(trackIP);
 
 // Toggle like
-router.post('/:blogId', idValidation, toggleLike);
+router.post('/:blogId', blogIdValidation, toggleLike);
 
 // Check if user liked
-router.get('/:blogId/check', idValidation, checkLikeStatus);
+router.get('/:blogId/check', blogIdValidation, checkLikeStatus);
 
 // Get like count
-router.get('/:blogId/count', idValidation, getLikeCount);
+router.get('/:blogId/count', blogIdValidation, getLikeCount);
 
 module.exports = router;

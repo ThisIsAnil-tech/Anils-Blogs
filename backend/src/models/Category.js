@@ -60,7 +60,7 @@ const CategorySchema = new mongoose.Schema(
 );
 
 // Create slug before saving
-CategorySchema.pre('save', function (next) {
+CategorySchema.pre('save', async function () {
   if (this.isModified('name') || this.isNew) {
     this.slug = slugify(this.name, {
       lower: true,
@@ -68,7 +68,6 @@ CategorySchema.pre('save', function (next) {
       trim: true
     });
   }
-  next();
 });
 
 // Indexes
