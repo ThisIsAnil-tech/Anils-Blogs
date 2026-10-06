@@ -16,3 +16,4 @@ aiml/.coverage
 aiml/logs/
 aiml/data/
 frontend/.env.example
+backend/logs/

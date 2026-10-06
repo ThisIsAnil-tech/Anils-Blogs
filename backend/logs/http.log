@@ -32,3 +32,78 @@
 2026-07-17 10:44:19 [ERROR]: Welcome email error: Failed to send email: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
 2026-07-17 10:44:19 [INFO]: POST /api/v1/subscribers - 201 - 1999ms
 2026-07-17 10:44:39 [INFO]: ⚠️ Received SIGINT. Closing server gracefully...
+2026-07-17 11:58:01 [INFO]: 🚀 Logger initialized in development mode
+2026-07-17 11:58:03 [INFO]: ✅ Email service initialized
+2026-07-17 11:58:04 [INFO]: ℹ️  Redis is disabled in environment variables
+2026-07-17 11:58:04 [WARN]: Swagger documentation not available
+2026-07-17 11:58:04 [INFO]: 📡 Connecting to MongoDB...
+2026-07-17 11:58:04 [INFO]: ℹ️  Redis not enabled
+2026-07-17 11:58:05 [INFO]: ✅ MongoDB Connected: ac-bvbe5cs-shard-00-01.hn8yafj.mongodb.net
+2026-07-17 11:58:05 [INFO]:    Database: personal_blog_db
+2026-07-17 11:58:05 [INFO]:    Connection Pool Size: default
+2026-07-17 11:58:06 [INFO]: ℹ️  Admin user already exists. Skipping seeding.
+2026-07-17 11:58:07 [INFO]: GET /api-docs - 200 - 52ms
+2026-07-17 11:58:07 [INFO]: POST /api/v1/auth/login - 200 - 424ms
+2026-07-17 11:58:07 [INFO]: GET /api/v1/auth/profile - 200 - 89ms
+2026-07-17 11:58:07 [INFO]: PUT /api/v1/auth/profile - 200 - 163ms
+2026-07-17 11:58:07 [INFO]: Admin Activity: admin - Create Category - POST /api/v1/categories
+2026-07-17 11:58:08 [INFO]: Category created: Test Category 1784269687869 by admin
+2026-07-17 11:58:08 [INFO]: POST /api/v1/categories - 201 - 150ms
+2026-07-17 11:58:08 [INFO]: GET /api/v1/categories - 200 - 110ms
+2026-07-17 11:58:08 [INFO]: GET /api/v1/categories/test-category-1784269687869 - 200 - 88ms
+2026-07-17 11:58:08 [INFO]: Admin Activity: admin - Update Category - PUT /api/v1/categories/6a59cb778caae674d40f1ca9
+2026-07-17 11:58:08 [INFO]: Category updated: Test Category Updated by admin
+2026-07-17 11:58:08 [INFO]: PUT /api/v1/categories/6a59cb778caae674d40f1ca9 - 200 - 175ms
+2026-07-17 11:58:08 [INFO]: Admin Activity: admin - Create Tag - POST /api/v1/tags
+2026-07-17 11:58:08 [INFO]: Tag created: Test Tag 1784269688432 by admin
+2026-07-17 11:58:08 [INFO]: POST /api/v1/tags - 201 - 151ms
+2026-07-17 11:58:08 [INFO]: GET /api/v1/tags - 200 - 55ms
+2026-07-17 11:58:08 [INFO]: GET /api/v1/tags/test-tag-1784269688432 - 200 - 51ms
+2026-07-17 11:58:08 [INFO]: Admin Activity: admin - Update Tag - PUT /api/v1/tags/6a59cb788caae674d40f1caa
+2026-07-17 11:58:08 [INFO]: Tag updated: Test Tag Updated by admin
+2026-07-17 11:58:08 [INFO]: PUT /api/v1/tags/6a59cb788caae674d40f1caa - 200 - 206ms
+2026-07-17 11:58:08 [INFO]: Admin Activity: admin - Admin Action - POST /api/v1/admin/blogs
+2026-07-17 11:58:08 [WARN]: ⚠️ MEGA.nz is not available. Using local/mock storage fallback for blog content.
+2026-07-17 11:58:09 [INFO]: POST /api/v1/admin/blogs - 201 - 305ms
+2026-07-17 11:58:09 [INFO]: GET /api/v1/blogs - 200 - 181ms
+2026-07-17 11:58:09 [INFO]: GET /api/v1/blogs/recent - 200 - 202ms
+2026-07-17 11:58:09 [INFO]: GET /api/v1/blogs/popular - 200 - 196ms
+2026-07-17 11:58:10 [WARN]: ⚠️ MEGA.nz is not available. Using local/mock fallback for getting content.
+2026-07-17 11:58:10 [INFO]: GET /api/v1/blogs/integration-test-blog-1784269688929 - 200 - 302ms
+2026-07-17 11:58:10 [INFO]: Admin Activity: admin - Admin Action - PUT /api/v1/admin/blogs/6a59cb788caae674d40f1cab
+2026-07-17 11:58:10 [WARN]: ⚠️ MEGA.nz is not available. Using local/mock storage fallback for updating blog content.
+2026-07-17 11:58:10 [INFO]: PUT /api/v1/admin/blogs/6a59cb788caae674d40f1cab - 200 - 600ms
+2026-07-17 11:58:10 [INFO]: POST /api/v1/comments/6a59cb788caae674d40f1cab - 201 - 193ms
+2026-07-17 11:58:11 [INFO]: GET /api/v1/comments/6a59cb788caae674d40f1cab - 200 - 197ms
+2026-07-17 11:58:11 [INFO]: Admin Activity: admin - Admin Action - GET /api/v1/admin/comments/pending
+2026-07-17 11:58:11 [INFO]: GET /api/v1/admin/comments/pending - 200 - 402ms
+2026-07-17 11:58:11 [INFO]: Admin Activity: admin - Admin Action - PUT /api/v1/admin/comments/6a59cb7a8caae674d40f1caf/approve
+2026-07-17 11:58:12 [INFO]: PUT /api/v1/admin/comments/6a59cb7a8caae674d40f1caf/approve - 200 - 502ms
+2026-07-17 11:58:12 [INFO]: POST /api/v1/likes/6a59cb788caae674d40f1cab - 200 - 400ms
+2026-07-17 11:58:12 [INFO]: GET /api/v1/likes/6a59cb788caae674d40f1cab/check - 200 - 96ms
+2026-07-17 11:58:12 [INFO]: GET /api/v1/likes/6a59cb788caae674d40f1cab/count - 200 - 98ms
+2026-07-17 11:58:12 [INFO]: POST /api/v1/shares/6a59cb788caae674d40f1cab - 200 - 237ms
+2026-07-17 11:58:13 [INFO]: GET /api/v1/shares/6a59cb788caae674d40f1cab/count - 200 - 150ms
+2026-07-17 11:58:13 [INFO]: 📧 Sending email to subscriber-1784269693122@test.com
+2026-07-17 11:58:16 [ERROR]: ❌ Email sending error: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+2026-07-17 11:58:16 [ERROR]: Welcome email error: Failed to send email: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+2026-07-17 11:58:16 [INFO]: POST /api/v1/subscribers - 201 - 2934ms
+2026-07-17 11:58:16 [INFO]: GET /api/v1/search?q=Integration - 200 - 264ms
+2026-07-17 11:58:16 [INFO]: GET /api/v1/search/suggestions?q=Int - 200 - 158ms
+2026-07-17 11:58:16 [INFO]: POST /api/v1/search/advanced - 200 - 131ms
+2026-07-17 11:58:16 [INFO]: Admin Activity: admin - Settings Action - GET /api/v1/settings
+2026-07-17 11:58:16 [INFO]: GET /api/v1/settings - 200 - 94ms
+2026-07-17 11:58:16 [INFO]: Admin Activity: admin - Settings Action - PUT /api/v1/settings
+2026-07-17 11:58:16 [INFO]: Settings updated by admin
+2026-07-17 11:58:16 [INFO]: PUT /api/v1/settings - 200 - 164ms
+2026-07-17 11:58:17 [INFO]: DELETE /api/v1/comments/6a59cb7a8caae674d40f1caf - 200 - 134ms
+2026-07-17 11:58:17 [INFO]: Admin Activity: admin - Admin Action - DELETE /api/v1/admin/blogs/6a59cb788caae674d40f1cab
+2026-07-17 11:58:17 [WARN]: MEGA.nz not available. Cannot delete file.
+2026-07-17 11:58:17 [INFO]: DELETE /api/v1/admin/blogs/6a59cb788caae674d40f1cab - 200 - 151ms
+2026-07-17 11:58:17 [INFO]: Admin Activity: admin - Delete Category - DELETE /api/v1/categories/6a59cb778caae674d40f1ca9
+2026-07-17 11:58:17 [INFO]: Category deleted: Test Category Updated by admin
+2026-07-17 11:58:17 [INFO]: DELETE /api/v1/categories/6a59cb778caae674d40f1ca9 - 200 - 256ms
+2026-07-17 11:58:17 [INFO]: Admin Activity: admin - Delete Tag - DELETE /api/v1/tags/6a59cb788caae674d40f1caa
+2026-07-17 11:58:17 [INFO]: Tag deleted: Test Tag Updated by admin
+2026-07-17 11:58:17 [INFO]: DELETE /api/v1/tags/6a59cb788caae674d40f1caa - 200 - 219ms
+2026-07-17 11:58:17 [WARN]: MongoDB disconnected
